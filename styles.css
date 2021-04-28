@@ -1,0 +1,74 @@
+
+
+
+/* GENERAL */
+button{
+    background-color: #00C4CC !important;
+    border: #00C4CC !important;
+}
+.page-background{
+    background-color: #037682;
+}
+.page-title{
+    color: #037682;
+    padding-bottom: 15px;
+}
+.heading{
+    color: #037682;
+}
+.main-page-area{
+    background-color: white;
+    width: 90%;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+nav{
+    padding-top: 15px !important;
+}
+.add-row-submit{
+    margin: 10px !important;
+}
+
+/* LOGIN PAGE */
+#login-page{
+    background-color: #037682;
+}
+#login-box{
+    max-width: 480px;
+}
+#login-title{
+    font-size: 2em;
+    text-align: center;
+
+}
+#login-logo{
+    display: block;
+    margin: auto;
+    width: 30%;
+}
+.login-label{
+    padding-left: 10px;
+    /* color: #037682; */
+    font-weight: 400;
+}
+#login-button{
+    margin: auto;
+    width: 100px;
+    padding: 7px 25px;
+}
+.login-input{
+    max-width: 350px;
+    margin: auto;
+}
+
+
+/* Home Page */
+.table-container{
+    margin: 40px 20px;
+}
+.add-row-container{
+    padding: 40px 20px;
+    background-color: #dff0f1;
+}
