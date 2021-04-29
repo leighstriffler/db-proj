@@ -25,11 +25,11 @@ $_SESSION['user'] = "";
       <form method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
         <div class="form-group text-center">
           <!-- <label class="login-label" for="inputUser">Username</label> -->
-          <input name='username' type="username" class="form-control login-input" id="inputUser" placeholder="Username" required>
+          <input name='username' type="username" class="form-control login-input" id="username" placeholder="Username" required>
         </div>
         <div class="form-group text-center">
           <!-- <label class="login-label" for="inputPassword">Password</label> -->
-          <input name='password' type="password" class="form-control login-input" id="inputPassword" placeholder="Password" required>
+          <input name='password' type="password" class="form-control login-input" id="password" placeholder="Password" required>
         </div>
         <div class="text-center">
           <button id="login-button" type="submit" class="btn btn-primary text-center">Log In</button>
@@ -44,28 +44,28 @@ $_SESSION['user'] = "";
     require('connectdb.php');
     if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0){
       $user = trim($_POST['username']);
-      $pwd = md5(trim($_POST['password']));
-      echo $user . $pwd;
+      $pwd = trim($_POST['password']);
+
 
       # Check that the username and password combo are correct (that they exist in the users table)
       global $db;
-      $query = "select username, password from users WHERE username=:user AND password=:pwd LIMIT 1";
+      $query = "select * from users WHERE username=:user AND pass=:pwd LIMIT 1";
+      
+      //execute as 'LoginUser' 
       $statement = $db->prepare($query); 
       $statement->bindValue(':user', $user);
       $statement->bindValue(':pwd', $pwd);
       $statement->execute();
+      
       $results = $statement->fetchAll();
       $statement->closecursor();
       if (count($results) > 0){
-        echo
+     echo "hi";
         $_SESSION['user'] = $user; 
-        $_SESSION['toggle']=false;
-        echo $_SESSION['user'];
+        $_SESSION['role']=$results[0]['role'];
         header('Location: appts.php');
       }
-      else{ //username and password not found
-        echo "<script>  showErrorBox(); </script>";
-      }
+      
     }
   ?>
 

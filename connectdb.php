@@ -18,10 +18,10 @@
 /******************************/
 // connecting to DB on XAMPP (local)
 
-$username = 'WepAppProject';
+$username = 'WebAppProject';
 $password = 'GoodF!lms1358';
-$host = 'localhost:3307';
-$dbname = 'WepAppProject';
+$host = 'localhost:3306';
+$dbname = 'db-proj';
 
 
 /******************************/
