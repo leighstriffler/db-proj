@@ -60,10 +60,21 @@ $_SESSION['user'] = "";
       $results = $statement->fetchAll();
       $statement->closecursor();
       if (count($results) > 0){
-     echo "hi";
         $_SESSION['user'] = $user; 
         $_SESSION['role']=$results[0]['role'];
-        header('Location: appts.php');
+
+        if($_SESSION['role']=='patient')
+          header('Location: patient_appts.php');
+
+        if($_SESSION['role']=='doctor'){
+          $_SESSION['d_ID']=$results[0]['fk_ID'];
+          header('Location: doc_appts.php');
+        }
+
+        if($_SESSION['role']=='nurse'){
+          $_SESSION['n_ID']=$results[0]['fk_ID'];
+          header('Location: nurse_appts.php');
+        }
       }
       
     }

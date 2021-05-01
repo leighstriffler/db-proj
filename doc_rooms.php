@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-$_SESSION['user'] = "";
+
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ $_SESSION['user'] = "";
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
       <link rel="stylesheet" href="styles.css" type="text/css">
-      <title> Login </title>
+      <title> Doctor Portal </title>
   </head>
 
   <!-- Navigation Bar -->
@@ -24,13 +24,13 @@ $_SESSION['user'] = "";
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="patients.php">Patients</a>
+                <a class="nav-link" href="doc_patients.php">Patients</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="appts.php">Appointments</a>
+                <a class="nav-link" href="doc_appts.php">Appointments</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="reservations.php">Rooms <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="doc_reservations.php">Rooms <span class="sr-only">(current)</span></a>
             </li>
             </ul>
             <form class="form-inline my-2 my-md-0">
@@ -48,47 +48,37 @@ $_SESSION['user'] = "";
             <table class="table table-hover table-sm table-responsive-lg">
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Room Number</th>
+                    <th scope="col">Room Type</th>
+                    <th scope="col">Appointment Date</th>
+                    <th scope="col">Appointment Time</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                    <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                <tbody id='table-body'>
+                <?php
+                    require('connectdb.php');
+
+                    global $db;
+                    $query = "select * from doc_reserve_view WHERE d_ID=:ID";
+                    $statement = $db->prepare($query); 
+                    $statement->bindValue(':ID', $_SESSION['d_ID']);
+                    $statement->execute();
+                    $results = $statement->fetchAll();
+                    $statement->closecursor();
+                    foreach($results as $result){
+                        echo "<tr>";
+                        echo        "<td>" . $result['room_num'] . '</td>'; 
+                        echo        "<td>" . $result['type'] . '</td>';
+                        echo        "<td>" . $result['date'] . "</td>" ;
+                        echo        "<td>" . $result['time']   . "</td>";
+                        echo "</tr>";
+                    }            
+                    ?>
                 </tbody>
             </table>
         </div>
     </div>
   </body>
-
-  <?php
-    require_once('./library.php');
-    $con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
-    // Check connection
-    if (mysqli_connect_errno()) {
-      echo("Can't connect to MySQL Server. Error code: " .
-      mysqli_connect_error());
-      return null;
-    }
-?>
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

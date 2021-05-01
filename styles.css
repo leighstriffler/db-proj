@@ -72,3 +72,12 @@ nav{
     padding: 40px 20px;
     background-color: #dff0f1;
 }
+#sort-button{
+    background-color: none;
+    float:right;
+}
+
+/*doc_patients page*/
+#credentials{
+    display:none;
+}
