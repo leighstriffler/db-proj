@@ -124,11 +124,11 @@ session_start();
 
                     <div id='credentials' class='form-row'>
                         <div class="col">
-                            <label for="username" class="col-form-label col-form-label-sm">Username </label>
+                            <label for="username" class="col-form-label col-form-label-sm">Patient Username </label>
                             <input name="username" type="text" class="form-control form-control-sm" required>
                         </div>
                         <div class="col">
-                            <label for="password" class="col-form-label col-form-label-sm">Password</label>
+                            <label for="password" class="col-form-label col-form-label-sm">Patient Password</label>
                             <input name='password' type="text" class="form-control form-control-sm" required>
                         </div>
                         <div class="form-row">
@@ -159,14 +159,15 @@ session_start();
                     VALUES(:ss, :f, :m, :l, :insur, :dadm, :dch) ";
         $statement = $db->prepare($query); 
         $statement->bindValue(':ss', $_POST['ssn']);
-        $statement->bindValue(':f', $_SESSION['inputFirst']);
-        $statement->bindValue(':m', $_SESSION['inputMiddle']);
-        $statement->bindValue(':l', $_SESSION['inputLast']);
-        $statement->bindValue(':insur', $_SESSION['insurance']);
-        $statement->bindValue(':dadm', $_SESSION['adate']);
-        $statement->bindValue(':dch', $_SESSION['cdate']);
+        $statement->bindValue(':f', $_POST['inputFirst']);
+        $statement->bindValue(':m', $_POST['inputMiddle']);
+        $statement->bindValue(':l', $_POST['inputLast']);
+        $statement->bindValue(':insur', $_POST['insurance']);
+        $statement->bindValue(':dadm', $_POST['adate']);
+        $statement->bindValue(':dch', $_POST['cdate']);
         $statement->execute();
         $results = $statement->fetchAll();
+        echo $results;
         $statement->closecursor();
 
         $query = "INSERT INTO patient_doc (SS, d_ID) 
@@ -182,15 +183,12 @@ session_start();
                     VALUES(:username, :ss, :password, :role) ";
         $statement = $db->prepare($query); 
         $statement->bindValue(':username', $_POST['username']);
-        $statement->bindValue(':ss', $_SESSION['ssn']);
-        $statement->bindValue(':password', $_SESSION['password']);
+        $statement->bindValue(':ss', $_POST['ssn']);
+        $statement->bindValue(':password', $_POST['password']);
         $statement->bindValue(':role', 'patient');
         $statement->execute();
         $results = $statement->fetchAll();
         $statement->closecursor();
-
-        //not sure if this reloads the table on teh screen though....
-        //also these queries don't work yolo
 
   }
    
