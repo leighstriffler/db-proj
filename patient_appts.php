@@ -12,6 +12,22 @@ session_start();
       <title> Patient Portal </title>
   </head>
 
+  <header>
+    <nav class="navbar navbar-expand navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link"> User:  <?php echo $_SESSION['user']; ?></a> </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        </nav>
+  <header>
+
   <!-- Main Page -->
   <body class="page-background">
     <div class="main-page-area">
@@ -28,7 +44,6 @@ session_start();
                         <th scope="col">Middle Initial</th>
                         <th scope="col">Last</th>
                         <th scope='col'>Insurance</th>
-                        <th scope='col'>SSN</th>
                     </tr>
                 </thead>
 
@@ -38,7 +53,7 @@ session_start();
 
                     global $db;
                 //display their contact info
-                $query = "select * from patient_info_view WHERE username=:user ";
+                $query = "select * from patient_info_view WHERE p_ID=:user ";
                 $statement = $db->prepare($query); 
                 $statement->bindValue(':user', $_SESSION['user']);
                 $statement->execute();
@@ -46,26 +61,22 @@ session_start();
                 $statement->closecursor();
                 foreach($results as $result){
                     echo "<tr>";
-                    echo        "<td>" . $result['f_name'] . '</td>'; 
-                    echo        "<td>" . $result['m_init'] . '</td>';
-                    echo        "<td>" . $result['l_name'] . "</td>" ;
+                    echo        "<td>" . $result['firstname'] . '</td>'; 
+                    echo        "<td>" . $result['middlename'] . '</td>';
+                    echo        "<td>" . $result['lastname'] . "</td>" ;
                     echo        "<td>" . $result['insurance']   . "</td>";
-                    echo        "<td>" . $result['SS']   . "</td>";
                     echo "</tr>";
                 }            
                     ?>
                 </tbody>
             </table>
 
-            <h4>Appointments</h4>
+            <h4>My Appointments</h4>
             <button id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
             <!-- Display Patient Appointments -->
             <table id="patient-appts-table" class="table table-hover table-sm table-responsive-lg">
                 <thead>
                         <tr>
-                            <th scope="col">First</th>
-                            <th scope="col">Middle Initial</th>
-                            <th scope="col">Last</th>
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
                             <th scope='col'>Room Number</th>
@@ -80,7 +91,7 @@ session_start();
                 global $db;
 
                 //display their appts
-                $query = "select * from patient_appts_view WHERE username=:user";
+                $query = "select * from patient_appts_view WHERE p_ID=:user";
                 $statement = $db->prepare($query); 
                 $statement->bindValue(':user', $_SESSION['user']);
                 $statement->execute();
@@ -88,9 +99,6 @@ session_start();
                 $statement->closecursor();
                 foreach($results as $result){
                     echo "<tr>";
-                    echo        "<td>" . $result['f_name'] . '</td>'; 
-                    echo        "<td>" . $result['m_init'] . '</td>';
-                    echo        "<td>" . $result['l_name'] . "</td>" ;
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
                     echo        "<td>" . $result['room_num'] . "</td>"; 
@@ -118,7 +126,7 @@ session_start();
     require('connectdb.php');
     
     global $db;
-    $query = "select * from patient_appts_view WHERE username=:user ORDER BY date DESC";
+    $query = "select * from patient_appts_view WHERE p_ID=:user ORDER BY date DESC";
     $statement = $db->prepare($query); 
     $statement->bindValue(':user', $_SESSION['user']);
     $statement->execute();
@@ -128,9 +136,6 @@ session_start();
     //display the sorted table
     foreach($results as $result){
         echo "<tr>";
-        echo        "<td>" . $result['f_name'] . '</td>'; 
-        echo        "<td>" . $result['m_init'] . '</td>';
-        echo        "<td>" . $result['l_name'] . "</td>" ;
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
         echo        "<td>" . $result['room_num'] . "</td>"; 

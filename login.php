@@ -1,6 +1,10 @@
 <?php 
 session_start(); 
+$_SESSION['role'] = "";
 $_SESSION['user'] = "";
+$_SESSION['n_ID'] = "";
+$_SESSION['d_ID'] = "";
+$_SESSION['p_ID'] = "";
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +53,11 @@ $_SESSION['user'] = "";
 
       # Check that the username and password combo are correct (that they exist in the users table)
       global $db;
-      $query = "select * from users WHERE username=:user AND pass=:pwd LIMIT 1";
+      $query = "select * from users WHERE ID=:id AND pass=:pwd LIMIT 1";
       
       //execute as 'LoginUser' 
       $statement = $db->prepare($query); 
-      $statement->bindValue(':user', $user);
+      $statement->bindValue(':id', $user);
       $statement->bindValue(':pwd', $pwd);
       $statement->execute();
       
@@ -63,16 +67,16 @@ $_SESSION['user'] = "";
         $_SESSION['user'] = $user; 
         $_SESSION['role']=$results[0]['role'];
 
-        if($_SESSION['role']=='patient')
+        if($_SESSION['role']=='patient'){
+          $_SESSION['p_ID'] = $results[0]['ID'];
           header('Location: patient_appts.php');
-
+        }
         if($_SESSION['role']=='doctor'){
-          $_SESSION['d_ID']=$results[0]['fk_ID'];
+          $_SESSION['d_ID']=$results[0]['ID'];
           header('Location: doc_appts.php');
         }
-
         if($_SESSION['role']=='nurse'){
-          $_SESSION['n_ID']=$results[0]['fk_ID'];
+          $_SESSION['n_ID']=$results[0]['ID'];
           header('Location: nurse_appts.php');
         }
       }

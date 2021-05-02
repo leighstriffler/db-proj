@@ -33,9 +33,12 @@ session_start();
                 <a class="nav-link" href="doc_reservations.php">Rooms <span class="sr-only">(current)</span></a>
             </li>
             </ul>
-            <form class="form-inline my-2 my-md-0">
-            <input class="form-control" type="text" placeholder="Search">
-            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <li class="nav-item"><a class="nav-link"> User:  <?php echo $_SESSION['user']; ?></a> </li>
+                    <a class="nav-link" href="login.php">Log Out</a>
+                </li>
+            </ul>
         </div>
         </nav>
   <header>

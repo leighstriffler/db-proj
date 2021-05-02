@@ -1,6 +1,8 @@
 <?php 
 session_start(); 
-
+if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
+    header('location:login.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,9 +35,12 @@ session_start();
                 <a class="nav-link" href="doc_rooms.php">Rooms</a>
             </li>
             </ul>
-            <form class="form-inline my-2 my-md-0">
-            <input class="form-control" type="text" placeholder="Search">
-            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <li class="nav-item"><a class="nav-link"> User:  <?php echo $_SESSION['user']; ?></a> </li>
+                    <a class="nav-link" href="login.php">Log Out</a>
+                </li>
+            </ul>
         </div>
         </nav>
 </header>
@@ -70,9 +75,9 @@ session_start();
                     $statement->closecursor();
                     foreach($results as $result){
                         echo "<tr>";
-                        echo        "<td>" . $result['f_name'] . '</td>'; 
-                        echo        "<td>" . $result['m_init'] . '</td>';
-                        echo        "<td>" . $result['l_name'] . "</td>" ;
+                        echo        "<td>" . $result['firstname'] . '</td>'; 
+                        echo        "<td>" . $result['middlename'] . '</td>';
+                        echo        "<td>" . $result['lastname'] . "</td>" ;
                         echo        "<td>" . $result['date_admitted']   . "</td>";
                         echo        "<td>" . $result['date_checkout']   . "</td>";
                         echo        "<td>" . $result['insurance']   . "</td>";
@@ -85,7 +90,7 @@ session_start();
         <div class="add-row-container">
 
                 <h3 class="heading"> Add Patient </h3>
-                <form method='post'>
+                <form method='POST'>
                     <div class="form-row">
                         <div class="col">
                             <label for="inputFirst" class="col-form-label col-form-label-sm">First Name</label>
@@ -98,10 +103,6 @@ session_start();
                         <div class="col">
                             <label for="inputFirst" class="col-form-label col-form-label-sm">Last Name</label>
                             <input name='inputLast' type="text" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col">
-                            <label for="inputFirst" class="col-form-label col-form-label-sm">Social Security Number </label>
-                            <input name='ssn' type="text" class="form-control form-control-sm" placeholder='XXX-XX-XXXX' required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -118,22 +119,20 @@ session_start();
                             <input name='cdate' type="date" class="form-control form-control-sm" required>
                         </div>
                     </div>
-                        <div class="form-row">
-                            <button type='button' class="btn btn-primary add-row-submit" onclick="toggleCreds()">Add Patient</button>
-                        </div>
 
                     <div id='credentials' class='form-row'>
                         <div class="col">
-                            <label for="username" class="col-form-label col-form-label-sm">Patient Username </label>
-                            <input name="username" type="text" class="form-control form-control-sm" required>
+                            <label for="user_ID" class="col-form-label col-form-label-sm">Create Patient User ID </label>
+                            <input name="user_ID" type="text" class="form-control form-control-sm" required>
                         </div>
                         <div class="col">
-                            <label for="password" class="col-form-label col-form-label-sm">Patient Password</label>
+                            <label for="password" class="col-form-label col-form-label-sm">Create Patient Temporary Password</label>
                             <input name='password' type="text" class="form-control form-control-sm" required>
                         </div>
-                        <div class="form-row">
-                            <button type="submit" class="btn btn-primary add-row-submit" onclick='<?php insertPatient()?>'>Sign Up Patient</button>
-                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary add-row-submit" onclick='<?php insertPatient()?>'>Add New Patient </button>
+                    </div>
                     </div>
                 </form>
         </div> 
@@ -154,11 +153,21 @@ session_start();
   function insertPatient(){
         require('connectdb.php');
     
-        global $db;
-        $query = "INSERT INTO patient (SS, f_name, m_init, l_name, insurance, date_admitted, date_checkout) 
-                    VALUES(:ss, :f, :m, :l, :insur, :dadm, :dch) ";
+        $query = "INSERT INTO users (ID, pass, role) 
+        VALUES(:p_ID, :password, :role) ";
         $statement = $db->prepare($query); 
-        $statement->bindValue(':ss', $_POST['ssn']);
+        $statement->bindValue(':p_ID', $_POST['user_ID']);
+        $statement->bindValue(':password', $_POST['password']);
+        $statement->bindValue(':role', 'patient');
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $statement->closecursor();
+
+        global $db;
+        $query = "INSERT INTO patient (p_ID, firstname, middlename, lastname, insurance, date_admitted, date_checkout) 
+                    VALUES(:p_ID, :f, :m, :l, :insur, :dadm, :dch) ";
+        $statement = $db->prepare($query); 
+        $statement->bindValue(':p_ID', $_POST['user_ID']);
         $statement->bindValue(':f', $_POST['inputFirst']);
         $statement->bindValue(':m', $_POST['inputMiddle']);
         $statement->bindValue(':l', $_POST['inputLast']);
@@ -170,26 +179,14 @@ session_start();
         echo $results;
         $statement->closecursor();
 
-        $query = "INSERT INTO patient_doc (SS, d_ID) 
-                    VALUES(:ss, :id) ";
+        $query = "INSERT INTO patient_doc (p_ID, d_ID) 
+                    VALUES(:p_ID, :id) ";
         $statement = $db->prepare($query); 
-        $statement->bindValue(':ss', $_POST['ssn']);
+        $statement->bindValue(':p_ID', $_POST['user_ID']);
         $statement->bindValue(':id', $_SESSION['d_ID']);
         $statement->execute();
         $results = $statement->fetchAll();
         $statement->closecursor();
-
-        $query = "INSERT INTO users (username, fk_ID, pass, role) 
-                    VALUES(:username, :ss, :password, :role) ";
-        $statement = $db->prepare($query); 
-        $statement->bindValue(':username', $_POST['username']);
-        $statement->bindValue(':ss', $_POST['ssn']);
-        $statement->bindValue(':password', $_POST['password']);
-        $statement->bindValue(':role', 'patient');
-        $statement->execute();
-        $results = $statement->fetchAll();
-        $statement->closecursor();
-
   }
    
   ?>

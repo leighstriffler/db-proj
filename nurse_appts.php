@@ -12,6 +12,22 @@ session_start();
       <title> Nurse Portal </title>
   </head>
 
+  <header>
+    <nav class="navbar navbar-expand navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link"> User:  <?php echo $_SESSION['user']; ?></a> </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        </nav>
+  <header>
+
   <!-- Main Page -->
   <body class="page-background">
     <div class="main-page-area">
@@ -26,7 +42,7 @@ session_start();
             <thead>
                     <tr>
                         <th scope="col">First</th>
-                        <th scope="col">Middle Initial</th>
+                        <th scope="col">Middle</th>
                         <th scope="col">Last</th>
                         <th scope='col'>Appointment Date</th>
                         <th scope='col'>Appointment Time</th>
@@ -49,9 +65,9 @@ session_start();
             $statement->closecursor();
             foreach($results as $result){
                 echo "<tr>";
-                echo        "<td>" . $result['f_name'] . '</td>'; 
-                echo        "<td>" . $result['m_init'] . '</td>';
-                echo        "<td>" . $result['l_name'] . "</td>" ;
+                echo        "<td>" . $result['firstname'] . '</td>'; 
+                echo        "<td>" . $result['middlename'] . '</td>';
+                echo        "<td>" . $result['lastname'] . "</td>" ;
                 echo        "<td>" . $result['date']   . "</td>";
                 echo        "<td>" . $result['time']   . "</td>";
                 echo        "<td>" . $result['room_num'] . "</td>"; 
@@ -88,9 +104,9 @@ session_start();
     //display the sorted table
     foreach($results as $result){
         echo "<tr>";
-        echo        "<td>" . $result['f_name'] . '</td>'; 
-        echo        "<td>" . $result['m_init'] . '</td>';
-        echo        "<td>" . $result['l_name'] . "</td>" ;
+        echo        "<td>" . $result['firstname'] . '</td>'; 
+        echo        "<td>" . $result['middlename'] . '</td>';
+        echo        "<td>" . $result['lastname'] . "</td>" ;
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
         echo        "<td>" . $result['room_num'] . "</td>"; 

@@ -1,5 +1,8 @@
 <?php 
 session_start(); 
+if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
+    header('location:login.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,9 +33,12 @@ session_start();
                 <a class="nav-link" href="doc_rooms.php">Rooms</a>
             </li>
             </ul>
-            <form class="form-inline my-2 my-md-0">
-            <input class="form-control" type="text" placeholder="Search">
-            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link"> User:  <?php echo $_SESSION['user']; ?></a> </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php">Log Out</a>
+                </li>
+            </ul>
         </div>
         </nav>
   <header>
@@ -51,11 +57,11 @@ session_start();
                 <thead>
                         <tr>
                             <th scope="col">First</th>
-                            <th scope="col">Middle Initial</th>
+                            <th scope="col">M.I.</th>
                             <th scope="col">Last</th>
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
-                            <th scope='col'>Room Number</th>
+                            <th scope='col'>Room</th>
                             <th scope='col'>Delete</th> 
                         </tr>
                 </thead>
@@ -73,13 +79,13 @@ session_start();
                 $statement->closecursor();
                 foreach($results as $result){
                     echo "<tr>";
-                    echo        "<td>" . $result['f_name'] . '</td>'; 
-                    echo        "<td>" . $result['m_init'] . '</td>';
-                    echo        "<td>" . $result['l_name'] . "</td>" ;
+                    echo        "<td>" . $result['firstname'] . '</td>'; 
+                    echo        "<td>" . $result['middlename'] . '</td>';
+                    echo        "<td>" . $result['lastname'] . "</td>" ;
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
                     echo        "<td>" . $result['room_num'] . "</td>"; 
-                    echo        "<td> <button id='delete-button' class='button'>Delete</button</td>";
+                    echo        "<td> <form method='POST' onclick='<?php deleteAppt()?>'><button type='submit' id='delete-button' class='button'>Delete</button></form></td>";
                     echo "</tr>";
                 }            
                 ?>
@@ -104,7 +110,7 @@ session_start();
     require('connectdb.php');
     
     global $db;
-    $query = "select * from doc_appts_view WHERE d_ID=:ID ORDER BY date DESC";
+    $query = "select DISTINCT * from doc_appts_view WHERE d_ID=:ID ORDER BY date DESC";
     $statement = $db->prepare($query); 
     $statement->bindValue(':ID', $_SESSION['d_ID']);
     $statement->execute();
@@ -114,9 +120,9 @@ session_start();
     //display the sorted table
     foreach($results as $result){
         echo "<tr>";
-        echo        "<td>" . $result['f_name'] . '</td>'; 
-        echo        "<td>" . $result['m_init'] . '</td>';
-        echo        "<td>" . $result['l_name'] . "</td>" ;
+        echo        "<td>" . $result['firstname'] . '</td>'; 
+        echo        "<td>" . $result['middlename'] . '</td>';
+        echo        "<td>" . $result['lastname'] . "</td>" ;
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
         echo        "<td>" . $result['room_num'] . "</td>"; 
@@ -125,6 +131,28 @@ session_start();
     } 
  }
  ?>
+
+<!-- <?php
+  //insert patient, patient doc, users tables
+  function deleteAppt(){
+        require('connectdb.php');
+    
+        global $db;
+        $query = "DELETE FROM appts WHERE  ";
+        $statement = $db->prepare($query); 
+        $statement->bindValue(':ss', $_POST['ssn']);
+        $statement->bindValue(':f', $_POST['inputFirst']);
+        $statement->bindValue(':m', $_POST['inputMiddle']);
+        $statement->bindValue(':l', $_POST['inputLast']);
+        $statement->bindValue(':insur', $_POST['insurance']);
+        $statement->bindValue(':dadm', $_POST['adate']);
+        $statement->bindValue(':dch', $_POST['cdate']);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        echo $results;
+        $statement->closecursor();
+  }
+  ?> -->
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
