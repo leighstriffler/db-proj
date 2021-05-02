@@ -40,7 +40,7 @@ if(isset($_POST["user_ID"])){
       $statement->execute();
       $results = $statement->fetchAll();
       $statement->closecursor();
-}
+    }
 ?>
 
 <!DOCTYPE html>
@@ -178,13 +178,10 @@ if(isset($_POST["user_ID"])){
   </body>
 
   <script>
-
       function toggleCreds(){
         $box=document.getElementById('credentials');
         $box.style.display='block';
       }
-
-    
   </script>
   <?php
   //insert patient, patient doc, users tables
