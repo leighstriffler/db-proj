@@ -66,6 +66,7 @@ $_SESSION['p_ID'] = "";
       if (count($results) > 0){
         $_SESSION['user'] = $user; 
         $_SESSION['role']=$results[0]['role'];
+        $_SESSION['apptdelete']=false;
 
         if($_SESSION['role']=='patient'){
           $_SESSION['p_ID'] = $results[0]['ID'];

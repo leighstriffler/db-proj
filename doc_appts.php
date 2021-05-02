@@ -62,7 +62,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
                             <th scope='col'>Room</th>
-                            <th scope='col'>Delete</th> 
                         </tr>
                 </thead>
                 <tbody id='table-body'>
@@ -85,7 +84,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
                     echo        "<td>" . $result['room_num'] . "</td>"; 
-                    echo        "<td> <form method='POST' onclick='<?php deleteAppt()?>'><button type='submit' id='delete-button' class='btn btn-primary'>Delete</button></form></td>";
                     echo "</tr>";
                 }            
                 ?>
@@ -126,7 +124,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
         echo        "<td>" . $result['room_num'] . "</td>"; 
-        echo        "<td> <button id='delete-button' class='btn btn-primary'>Delete</button</td>";
         echo "</tr>";
     } 
  }

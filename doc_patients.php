@@ -7,39 +7,22 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
 if(isset($_POST["user_ID"])){
       require('connectdb.php');
   
-      $query = "INSERT INTO users (ID, pass, role) 
-      VALUES(:p_ID, :password, :role) ";
-      $statement = $db->prepare($query); 
-      $statement->bindValue(':p_ID', $_POST['user_ID']);
-      $statement->bindValue(':password', $_POST['password']);
-      $statement->bindValue(':role', 'patient');
-      $statement->execute();
-      $results = $statement->fetchAll();
-      $statement->closecursor();
-
       global $db;
-      $query = "INSERT INTO patient (p_ID, firstname, middlename, lastname, insurance, date_admitted, date_checkout) 
-                  VALUES(:p_ID, :f, :m, :l, :insur, :dadm, :dch) ";
-      $statement = $db->prepare($query); 
-      $statement->bindValue(':p_ID', $_POST['user_ID']);
-      $statement->bindValue(':f', $_POST['inputFirst']);
-      $statement->bindValue(':m', $_POST['inputMiddle']);
-      $statement->bindValue(':l', $_POST['inputLast']);
-      $statement->bindValue(':insur', $_POST['insurance']);
-      $statement->bindValue(':dadm', $_POST['adate']);
-      $statement->bindValue(':dch', $_POST['cdate']);
-      $statement->execute();
-      $results = $statement->fetchAll();
-      $statement->closecursor();
-
-      $query = "INSERT INTO patient_doc (p_ID, d_ID) 
-                  VALUES(:p_ID, :id) ";
-      $statement = $db->prepare($query); 
-      $statement->bindValue(':p_ID', $_POST['user_ID']);
-      $statement->bindValue(':id', $_SESSION['d_ID']);
-      $statement->execute();
-      $results = $statement->fetchAll();
-      $statement->closecursor();
+        $query = "CALL add_patient(:p_ID, :firstname, :middlename, :lastname, :insurance, :dateadm, :datecho, :doc_id, :pass, :role);";
+        $statement = $db->prepare($query); 
+        $statement->bindValue(':p_ID', $_POST['user_ID']);
+        $statement->bindValue(':firstname', $_POST['inputFirst']);
+        $statement->bindValue(':middlename', $_POST['inputMiddle']);
+        $statement->bindValue(':lastname', $_POST['inputLast']);
+        $statement->bindValue(':insurance', $_POST['insurance']);
+        $statement->bindValue(':dateadm', $_POST['adate']);
+        $statement->bindValue(':datecho', $_POST['cdate']);
+        $statement->bindValue(':doc_id', $_SESSION['d_ID']);
+        $statement->bindValue(':pass', $_POST['password']);
+        $statement->bindValue(':role', 'patient');
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $statement->closecursor();
     }
 ?>
 
@@ -185,26 +168,26 @@ if(isset($_POST["user_ID"])){
   </script>
   <?php
   //insert patient, patient doc, users tables
-  function insertPatient(){
-        require('connectdb.php');
+//   function insertPatient(){
+//         require('connectdb.php');
     
-        global $db;
-        $query = "CALL add_patient(:p_ID, :firstname, :middlename, :lastname, :insurance, :dateadm, :datecho, :doc_id, :pass, :role);";
-        $statement = $db->prepare($query); 
-        $statement->bindValue(':p_ID', $_POST['user_ID']);
-        $statement->bindValue(':firstname', $_POST['inputFirst']);
-        $statement->bindValue(':middlename', $_POST['inputMiddle']);
-        $statement->bindValue(':lastname', $_POST['inputLast']);
-        $statement->bindValue(':insurance', $_POST['insurance']);
-        $statement->bindValue(':dateadm', $_POST['adate']);
-        $statement->bindValue(':datecho', $_POST['cdate']);
-        $statement->bindValue(':doc_id', $_SESSION['d_ID']);
-        $statement->bindValue(':pass', $_POST['password']);
-        $statement->bindValue(':role', 'patient');
-        $statement->execute();
-        $results = $statement->fetchAll();
-        $statement->closecursor();
-  }
+//         global $db;
+//         $query = "CALL add_patient(:p_ID, :firstname, :middlename, :lastname, :insurance, :dateadm, :datecho, :doc_id, :pass, :role);";
+//         $statement = $db->prepare($query); 
+//         $statement->bindValue(':p_ID', $_POST['user_ID']);
+//         $statement->bindValue(':firstname', $_POST['inputFirst']);
+//         $statement->bindValue(':middlename', $_POST['inputMiddle']);
+//         $statement->bindValue(':lastname', $_POST['inputLast']);
+//         $statement->bindValue(':insurance', $_POST['insurance']);
+//         $statement->bindValue(':dateadm', $_POST['adate']);
+//         $statement->bindValue(':datecho', $_POST['cdate']);
+//         $statement->bindValue(':doc_id', $_SESSION['d_ID']);
+//         $statement->bindValue(':pass', $_POST['password']);
+//         $statement->bindValue(':role', 'patient');
+//         $statement->execute();
+//         $results = $statement->fetchAll();
+//         $statement->closecursor();
+//   }
    
   ?>
 

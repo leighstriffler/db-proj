@@ -14,6 +14,22 @@ if(isset($_POST['inputFirst'])){
     $statement->execute();
     $results = $statement->fetchAll();
     $statement->closecursor();
+
+}
+
+if(isset($_POST['apptdelete'])==true){
+
+    require('connectdb.php');
+    echo 'hi';
+        global $db;
+        $query = "CALL delete_appt(:p_id, :appointmentid) ";
+        $statement = $db->prepare($query); 
+        $statement->bindValue(':p_id', $_SESSION['user_ID']);
+        $statement->bindValue(':appointmentid', $_POST['appt_ID']);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        echo $results;
+        $statement->closecursor();
 }
 ?>
 
@@ -107,7 +123,7 @@ if(isset($_POST['inputFirst'])){
                     </div>
                 </div>
                 <div class="form-row">
-                    <button type="submit" class="btn btn-primary add-row-submit" >Change Info </button>
+                    <button type="submit" class="btn btn-primary add-row-submit" onclick="<?php $_SESSION['apptdelete']=true; ?>">Change Info </button>
                 </div>
             </form>
         </div> 
@@ -139,11 +155,16 @@ if(isset($_POST['inputFirst'])){
                 $results = $statement->fetchAll();
                 $statement->closecursor();
                 foreach($results as $result){
+                    $apptid=$result['appt_ID'];
                     echo "<tr>";
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
                     echo        "<td>" . $result['room_num'] . "</td>"; 
-                    echo        "<td> <button class='btn btn-primary' id='delete-button' name='sortDateDesc'>Delete</button</td>";
+                    echo        "<td>" ;
+                    echo             "<form action='patient_appts.php'>" .
+                               "<input type='hidden' name='appt_ID' value='" .$apptid. "'>" .
+                                "<button class='btn btn-primary' id='delete-button'>Delete</button</td>";
+                                "</form>";
                     echo "</tr>";
                 }            
                 ?>
