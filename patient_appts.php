@@ -17,7 +17,7 @@ if(isset($_POST['inputFirst'])){
 
 }
 
-if(isset($_POST['apptdelete'])==true){
+if(isset($_POST['apptdelete'])){
 
     require('connectdb.php');
     echo 'hi';
