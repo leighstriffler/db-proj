@@ -78,3 +78,8 @@ nav{
 }
 
 /*doc_patients page*/
+#update-user-container{
+    display: none;
+    margin: 20px 0;
+    padding: 0;
+}

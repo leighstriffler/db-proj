@@ -70,9 +70,39 @@ session_start();
                     ?>
                 </tbody>
             </table>
+            <button class = "btn btn-primary" onclick="showEdit()"> Change User Info </button>
+
+            <div id="update-user-container">
+                <h4> Update User Info </h4>
+                <form method='POST'>
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="inputFirst" class="col-form-label col-form-label-sm">First Name</label>
+                            <input name="inputFirst" type="text" class="form-control form-control-sm"  required>
+                        </div>
+                        <div class="col">
+                            <label for="inputFirst" class="col-form-label col-form-label-sm">Middle Name</label>
+                            <input name='inputMiddle' type="text" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col">
+                            <label for="inputFirst" class="col-form-label col-form-label-sm">Last Name</label>
+                            <input name='inputLast' type="text" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col">
+                            <label for="inputInsurance" class="col-form-label col-form-label-sm">Insurance </label>
+                            <input name='insurance' type="text" class="form-control form-control-sm" placeholder="Provider" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary add-row-submit" onclick='<?php updatePatient()?>'>Change Info </button>
+                    </div>
+                </form>
+            </div> 
+            
+
 
             <h4>My Appointments</h4>
-            <button id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
+            <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
             <!-- Display Patient Appointments -->
             <table id="patient-appts-table" class="table table-hover table-sm table-responsive-lg">
                 <thead>
@@ -102,7 +132,7 @@ session_start();
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
                     echo        "<td>" . $result['room_num'] . "</td>"; 
-                    echo        "<td> <button id='delete-button' class='button' name='sortDateDesc'>Delete</button</td>";
+                    echo        "<td> <button class='btn btn-primary' id='delete-button' name='sortDateDesc'>Delete</button</td>";
                     echo "</tr>";
                 }            
                 ?>
@@ -119,7 +149,32 @@ session_start();
     }
 
 </script>
+<script>
+
+function showEdit(){
+  $box=document.getElementById('update-user-container');
+  $box.style.display='block';
+}
+
+
+</script>
  <?php
+
+ function updatePatient(){
+     global $db;
+     $query = "UPDATE `patient` SET firstname=:firstname, middlename=:middlename, lastname=:lastname, insurance=:insurance   WHERE `patient`.`p_ID`=:p_ID";
+     $statement = $db->prepare($query); 
+     $statement->bindValue(':p_ID', $_SESSION['user']);
+     $statement->bindValue(':firstname', $_POST['inputFirst']);
+     $statement->bindValue(':middlename', $_POST['inputMiddle']);
+     $statement->bindValue(':lastname', $_POST['inputLast']);
+     $statement->bindValue(':insurance', $_POST['insurance']);  
+     $statement->execute();
+     $results = $statement->fetchAll();
+     $statement->closecursor();
+     header("Location: patient_appts.php");
+ 
+}
 
  function sortTable(){
     
