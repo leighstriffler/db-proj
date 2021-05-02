@@ -2,10 +2,10 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 02, 2021 at 03:54 PM
+-- Host: 127.0.0.1
+-- Generation Time: May 02, 2021 at 06:27 PM
 -- Server version: 10.4.17-MariaDB
--- PHP Version: 7.3.26
+-- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,44 @@ SET time_zone = "+00:00";
 --
 -- Database: `db-proj`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_patient` (IN `p_id` VARCHAR(255), IN `f` VARCHAR(225), IN `m` VARCHAR(225), IN `l` VARCHAR(225), IN `insur` VARCHAR(225), IN `dadm` VARCHAR(225), IN `dch` VARCHAR(225), IN `doc_id` VARCHAR(255), IN `pass` VARCHAR(255), IN `role` VARCHAR(255))  BEGIN
+	START TRANSACTION;
+	INSERT INTO patient (p_ID, firstname, middlename, lastname, insurance, date_admitted, date_checkout)
+	VALUES (p_id, f, m, l, insur, dadm, dch);
+
+	INSERT INTO patient_doc (p_ID, d_ID) 
+                    VALUES(p_id, doc_id);
+
+	INSERT INTO users (ID, pass, role) 
+                    VALUES(p_id, pass, role);
+	COMMIT;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_appt` (IN `p_id` VARCHAR(255), IN `appointmentid` VARCHAR(225))  BEGIN
+	START TRANSACTION;
+		DELETE FROM appointment WHERE appt_id=appointmentid AND appointment.p_ID=p_id;
+		DELETE FROM attends WHERE attends.p_ID=p_id AND appt_id=appointmentid;
+		DELETE FROM reserves WHERE reserves.p_ID=p_id;
+	COMMIT;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_patient_info` (IN `p_id` VARCHAR(255), IN `f` VARCHAR(225), IN `m` VARCHAR(225), IN `l` VARCHAR(225), IN `insur` VARCHAR(225))  BEGIN
+	START TRANSACTION;
+		UPDATE patient 
+		SET firstname=f, middlename=m, lastname=l, insurance=insur
+		WHERE patient.p_ID=p_id;
+	COMMIT;
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -142,6 +180,9 @@ CREATE TABLE `doc_reserve_view` (
 ,`date` date
 ,`time` time
 ,`type` varchar(255)
+,`firstname` varchar(255)
+,`middlename` varchar(255)
+,`lastname` varchar(255)
 );
 
 -- --------------------------------------------------------
@@ -206,8 +247,9 @@ CREATE TABLE `patient` (
 --
 
 INSERT INTO `patient` (`p_ID`, `firstname`, `middlename`, `lastname`, `insurance`, `date_admitted`, `date_checkout`) VALUES
-('aabranch', 'Ally', 'A', 'Branch', 'None', '2021-05-11', '2021-05-20'),
+('aabranch', '', NULL, '', '', '2021-05-11', '2021-05-20'),
 ('hhbranch', 'Heidi', 'A', 'Branch', 'Aetna', '2021-05-08', '2021-06-04'),
+('leighstrif', 'lisa', 's', 'striffler', 'cigna', '2021-12-13', '2021-12-14'),
 ('nbBranch', 'Noell', 'Elise', 'Branch', 'Aetna', '2021-05-05', '2021-06-03'),
 ('sStein', 'Shay', 'Nicole', 'Steinkirchner', 'Aetna', '2021-05-14', '2021-06-03');
 
@@ -231,6 +273,7 @@ CREATE TABLE `patient_appts_view` (
 ,`ID` varchar(255)
 ,`doctor.firstname` varchar(255)
 ,`doctor.lastname` varchar(255)
+,`appt_ID` varchar(255)
 );
 
 -- --------------------------------------------------------
@@ -251,6 +294,7 @@ CREATE TABLE `patient_doc` (
 INSERT INTO `patient_doc` (`p_ID`, `d_ID`) VALUES
 ('aabranch', '1001'),
 ('hhbranch', '1001'),
+('leighstrif', '1001'),
 ('nbBranch', '1001'),
 ('sStein', '1001');
 
@@ -311,8 +355,10 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`room_num`, `type`) VALUES
-('100', 'Exam'),
-('200', 'Exam');
+('100', 'patient'),
+('200', 'patient'),
+('300', 'patient'),
+('400', 'patient');
 
 -- --------------------------------------------------------
 
@@ -334,6 +380,7 @@ INSERT INTO `users` (`ID`, `pass`, `role`) VALUES
 ('1001', 'password', 'doctor'),
 ('aabranch', 'password', 'patient'),
 ('hhbranch', 'password', 'patient'),
+('leighstrif', 'password', 'patient'),
 ('nbBranch', 'password', 'patient'),
 ('nurse1', 'password', 'nurse'),
 ('sStein', 'password', 'patient');
@@ -363,7 +410,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `doc_reserve_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `doc_reserve_view`  AS SELECT `reserves`.`d_ID` AS `d_ID`, `reserves`.`room_num` AS `room_num`, `reserves`.`p_ID` AS `p_ID`, `reserves`.`date` AS `date`, `reserves`.`time` AS `time`, `room`.`type` AS `type` FROM (`reserves` join `room` on(`room`.`room_num` = `reserves`.`room_num`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `doc_reserve_view`  AS SELECT `reserves`.`d_ID` AS `d_ID`, `reserves`.`room_num` AS `room_num`, `reserves`.`p_ID` AS `p_ID`, `reserves`.`date` AS `date`, `reserves`.`time` AS `time`, `room`.`type` AS `type`, `patient`.`firstname` AS `firstname`, `patient`.`middlename` AS `middlename`, `patient`.`lastname` AS `lastname` FROM ((`reserves` join `room` on(`room`.`room_num` = `reserves`.`room_num`)) join `patient` on(`reserves`.`p_ID` = `patient`.`p_ID`)) ;
 
 -- --------------------------------------------------------
 
@@ -381,7 +428,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `patient_appts_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `patient_appts_view`  AS SELECT `patient`.`p_ID` AS `p_ID`, `patient`.`firstname` AS `firstname`, `patient`.`middlename` AS `middlename`, `patient`.`lastname` AS `lastname`, `patient`.`insurance` AS `insurance`, `patient`.`date_admitted` AS `date_admitted`, `patient`.`date_checkout` AS `date_checkout`, `attends`.`date` AS `date`, `attends`.`time` AS `time`, `reserves`.`room_num` AS `room_num`, `users`.`ID` AS `ID`, `doctor`.`firstname` AS `doctor.firstname`, `doctor`.`lastname` AS `doctor.lastname` FROM (((((`appointment` join `patient` on(`appointment`.`p_ID` = `patient`.`p_ID`)) join `users` on(`patient`.`p_ID` = `users`.`ID`)) join `attends` on(`appointment`.`p_ID` = `attends`.`p_ID`)) join `reserves` on(`reserves`.`p_ID` = `patient`.`p_ID`)) join `doctor` on(`doctor`.`d_ID` = `appointment`.`d_ID`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `patient_appts_view`  AS SELECT `patient`.`p_ID` AS `p_ID`, `patient`.`firstname` AS `firstname`, `patient`.`middlename` AS `middlename`, `patient`.`lastname` AS `lastname`, `patient`.`insurance` AS `insurance`, `patient`.`date_admitted` AS `date_admitted`, `patient`.`date_checkout` AS `date_checkout`, `attends`.`date` AS `date`, `attends`.`time` AS `time`, `reserves`.`room_num` AS `room_num`, `users`.`ID` AS `ID`, `doctor`.`firstname` AS `doctor.firstname`, `doctor`.`lastname` AS `doctor.lastname`, `appointment`.`appt_ID` AS `appt_ID` FROM (((((`appointment` join `patient` on(`appointment`.`p_ID` = `patient`.`p_ID`)) join `users` on(`patient`.`p_ID` = `users`.`ID`)) join `attends` on(`appointment`.`p_ID` = `attends`.`p_ID`)) join `reserves` on(`reserves`.`p_ID` = `patient`.`p_ID`)) join `doctor` on(`doctor`.`d_ID` = `appointment`.`d_ID`)) ;
 
 -- --------------------------------------------------------
 
