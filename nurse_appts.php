@@ -34,8 +34,8 @@ session_start();
         <div class="table-container">
         <div class="table-container">
 
-        <h1 class="page-title"> Appointments </h1>
-        <button id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
+        <h1 class="page-title table-title"> Appointments </h1>
+        <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
         
         <!-- Display Patient Appointments -->
         <table id="patient-appts-table" class="table table-hover table-sm table-responsive-lg">

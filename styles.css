@@ -5,6 +5,7 @@
 button{
     background-color: #00C4CC !important;
     border: #00C4CC !important;
+    margin: 2px;
 }
 .page-background{
     background-color: #037682;
@@ -62,24 +63,32 @@ nav{
     max-width: 350px;
     margin: auto;
 }
-
+.table-title{
+    float: left;
+}
 
 /* Home Page */
 .table-container{
     margin: 40px 20px;
 }
 .add-row-container{
-    padding: 40px 20px;
+    padding: 20px 20px;
     background-color: #dff0f1;
 }
 #sort-button{
     background-color: none;
     float:right;
+    align-self: flex-end;
+}
+#change-user-info-btn{
+    float: right;
 }
 
 /*doc_patients page*/
 #update-user-container{
     display: none;
-    margin: 20px 0;
-    padding: 0;
+    margin: 0px 20px;
+    padding: 10px 20px;
+    background-color: #dff0f1;
+
 }

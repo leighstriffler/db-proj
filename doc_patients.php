@@ -89,7 +89,7 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
         </div>
         <div class="add-row-container">
 
-                <h3 class="heading"> Add Patient </h3>
+                <h3> Add Patient </h3>
                 <form method='POST'>
                     <div class="form-row">
                         <div class="col">

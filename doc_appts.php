@@ -48,11 +48,11 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
     <div class="main-page-area">
         <div class="table-container">
         <div class="table-container">
-            <h1 class="page-title"> Appointments </h1>
+            <h1 class="page-title table-title"> Appointments </h1>
             
 
             <!-- Display Doctor Appointments -->
-            <button id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
+            <button id='sort-button' class="btn btn-primary" onclick='sortDateDesc()'>Sort Appointments by Date</button>
             <table id="doc-appts-table" class="table table-hover table-sm table-responsive-lg">
                 <thead>
                         <tr>
@@ -85,7 +85,7 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
                     echo        "<td>" . $result['room_num'] . "</td>"; 
-                    echo        "<td> <form method='POST' onclick='<?php deleteAppt()?>'><button type='submit' id='delete-button' class='button'>Delete</button></form></td>";
+                    echo        "<td> <form method='POST' onclick='<?php deleteAppt()?>'><button type='submit' id='delete-button' class='btn btn-primary'>Delete</button></form></td>";
                     echo "</tr>";
                 }            
                 ?>
@@ -126,7 +126,7 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
         echo        "<td>" . $result['room_num'] . "</td>"; 
-        echo        "<td> <button id='delete-button' class='button'>Delete</button</td>";
+        echo        "<td> <button id='delete-button' class='btn btn-primary'>Delete</button</td>";
         echo "</tr>";
     } 
  }
