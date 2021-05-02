@@ -18,11 +18,16 @@
 /******************************/
 // connecting to DB on XAMPP (local)
 
-$username = 'WebAppProject';
-$password = 'GoodF!lms1358';
-$host = 'localhost:3306';
-$dbname = 'db-proj';
+// $username = 'WebAppProject';
+// $password = 'GoodF!lms1358';
+// $host = 'localhost:3306';
+// $dbname = 'db-proj';
 
+//connecting to leigh's cs server
+$username = 'lss4de';
+$password = 'springJefferson22!';
+$host = 'usersrv01.cs.virginia.edu';
+$dbname = 'lss4de';
 
 /******************************/
 

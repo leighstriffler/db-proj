@@ -17,7 +17,7 @@ if(isset($_POST['inputFirst'])){
 
 }
 
-if(isset($_POST['apptdelete'])){
+if(isset($_POST['appt_ID'])){
 
     require('connectdb.php');
     echo 'hi';
@@ -136,7 +136,6 @@ if(isset($_POST['apptdelete'])){
                         <tr>
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
-                            <th scope='col'>Room Number</th>
                             <th scope='col'>Delete</th> 
                         </tr>
                 </thead>
@@ -159,7 +158,7 @@ if(isset($_POST['apptdelete'])){
                     echo "<tr>";
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . $result['time']   . "</td>";
-                    echo        "<td>" . $result['room_num'] . "</td>"; 
+                    // echo        "<td>" . $result['room_num'] . "</td>"; 
                     echo        "<td>" ;
                     echo             "<form action='patient_appts.php'>" .
                                "<input type='hidden' name='appt_ID' value='" .$apptid. "'>" .

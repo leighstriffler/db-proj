@@ -129,27 +129,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
  }
  ?>
 
-<!-- <?php
-  //insert patient, patient doc, users tables
-  function deleteAppt(){
-        require('connectdb.php');
-    
-        global $db;
-        $query = "DELETE FROM appts WHERE  ";
-        $statement = $db->prepare($query); 
-        $statement->bindValue(':ss', $_POST['ssn']);
-        $statement->bindValue(':f', $_POST['inputFirst']);
-        $statement->bindValue(':m', $_POST['inputMiddle']);
-        $statement->bindValue(':l', $_POST['inputLast']);
-        $statement->bindValue(':insur', $_POST['insurance']);
-        $statement->bindValue(':dadm', $_POST['adate']);
-        $statement->bindValue(':dch', $_POST['cdate']);
-        $statement->execute();
-        $results = $statement->fetchAll();
-        echo $results;
-        $statement->closecursor();
-  }
-  ?> -->
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
