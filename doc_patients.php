@@ -1,8 +1,46 @@
 <?php 
 session_start(); 
 if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
-    header('location:login.php');
+    header('location: login.php');
 }
+//insert patient, patient doc, users tables
+if(isset($_POST["user_ID"])){
+      require('connectdb.php');
+  
+      $query = "INSERT INTO users (ID, pass, role) 
+      VALUES(:p_ID, :password, :role) ";
+      $statement = $db->prepare($query); 
+      $statement->bindValue(':p_ID', $_POST['user_ID']);
+      $statement->bindValue(':password', $_POST['password']);
+      $statement->bindValue(':role', 'patient');
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closecursor();
+
+      global $db;
+      $query = "INSERT INTO patient (p_ID, firstname, middlename, lastname, insurance, date_admitted, date_checkout) 
+                  VALUES(:p_ID, :f, :m, :l, :insur, :dadm, :dch) ";
+      $statement = $db->prepare($query); 
+      $statement->bindValue(':p_ID', $_POST['user_ID']);
+      $statement->bindValue(':f', $_POST['inputFirst']);
+      $statement->bindValue(':m', $_POST['inputMiddle']);
+      $statement->bindValue(':l', $_POST['inputLast']);
+      $statement->bindValue(':insur', $_POST['insurance']);
+      $statement->bindValue(':dadm', $_POST['adate']);
+      $statement->bindValue(':dch', $_POST['cdate']);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closecursor();
+
+      $query = "INSERT INTO patient_doc (p_ID, d_ID) 
+                  VALUES(:p_ID, :id) ";
+      $statement = $db->prepare($query); 
+      $statement->bindValue(':p_ID', $_POST['user_ID']);
+      $statement->bindValue(':id', $_SESSION['d_ID']);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closecursor();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -131,7 +169,7 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                         </div>
                     </div>
                     <div class="form-row">
-                        <button type="submit" class="btn btn-primary add-row-submit" onclick='<?php insertPatient()?>'>Add New Patient </button>
+                        <button type="submit" class="btn btn-primary add-row-submit">Add New Patient </button>
                     </div>
                     </div>
                 </form>
@@ -140,56 +178,13 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
   </body>
 
   <script>
-
       function toggleCreds(){
         $box=document.getElementById('credentials');
         $box.style.display='block';
       }
-
-    
   </script>
-  <?php
-  //insert patient, patient doc, users tables
-  function insertPatient(){
-        require('connectdb.php');
-    
-        $query = "INSERT INTO users (ID, pass, role) 
-        VALUES(:p_ID, :password, :role) ";
-        $statement = $db->prepare($query); 
-        $statement->bindValue(':p_ID', $_POST['user_ID']);
-        $statement->bindValue(':password', $_POST['password']);
-        $statement->bindValue(':role', 'patient');
-        $statement->execute();
-        $results = $statement->fetchAll();
-        $statement->closecursor();
 
-        global $db;
-        $query = "INSERT INTO patient (p_ID, firstname, middlename, lastname, insurance, date_admitted, date_checkout) 
-                    VALUES(:p_ID, :f, :m, :l, :insur, :dadm, :dch) ";
-        $statement = $db->prepare($query); 
-        $statement->bindValue(':p_ID', $_POST['user_ID']);
-        $statement->bindValue(':f', $_POST['inputFirst']);
-        $statement->bindValue(':m', $_POST['inputMiddle']);
-        $statement->bindValue(':l', $_POST['inputLast']);
-        $statement->bindValue(':insur', $_POST['insurance']);
-        $statement->bindValue(':dadm', $_POST['adate']);
-        $statement->bindValue(':dch', $_POST['cdate']);
-        $statement->execute();
-        $results = $statement->fetchAll();
-        echo $results;
-        $statement->closecursor();
 
-        $query = "INSERT INTO patient_doc (p_ID, d_ID) 
-                    VALUES(:p_ID, :id) ";
-        $statement = $db->prepare($query); 
-        $statement->bindValue(':p_ID', $_POST['user_ID']);
-        $statement->bindValue(':id', $_SESSION['d_ID']);
-        $statement->execute();
-        $results = $statement->fetchAll();
-        $statement->closecursor();
-  }
-   
-  ?>
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
