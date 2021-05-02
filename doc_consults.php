@@ -24,13 +24,16 @@ session_start();
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="doc_patients.php">Patients</a>
+                <a class="nav-link" href="doc_patients.php">Patient List</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="doc_appts.php">Appointments</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients</a>
+            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="doc_reservations.php">Rooms <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="doc_consults.php">Consultations <span class="sr-only">(current)</span></a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -47,14 +50,17 @@ session_start();
   <body class="page-background">
     <div class="main-page-area">
         <div class="table-container">
-            <h1 class="page-title"> Room Reservations </h1>
+            <h1 class="page-title"> Current Overnight Patients</h1>
             <table class="table table-hover table-sm table-responsive-lg">
                 <thead>
                     <tr>
+                    <th scope="col">Patient's First</th>
+                    <th scope="col">Patient's Last</th>
                     <th scope="col">Room Number</th>
-                    <th scope="col">Room Type</th>
-                    <th scope="col">Appointment Date</th>
-                    <th scope="col">Appointment Time</th>
+                    <th scope="col">Admission Date</th>
+                    <th scope='col'>Est. Checkout Date</th>
+                    <th scope="col">Nurse's First Name</th>
+                    <th scope="col">Nurse's Last Name</th>
                     </tr>
                 </thead>
                 <tbody id='table-body'>
@@ -70,10 +76,13 @@ session_start();
                     $statement->closecursor();
                     foreach($results as $result){
                         echo "<tr>";
-                        echo        "<td>" . $result['room_num'] . '</td>'; 
-                        echo        "<td>" . $result['type'] . '</td>';
-                        echo        "<td>" . $result['date'] . "</td>" ;
-                        echo        "<td>" . $result['time']   . "</td>";
+                        echo        "<td>" . $result['firstname'] . '</td>'; 
+                        echo        "<td>" . $result['lastname'] . '</td>';
+                        echo        "<td>" . $result['room_num'] . "</td>" ;
+                        echo        "<td>" . $result['date_admitted']   . "</td>";
+                        echo        "<td>" . $result['date_checkout']   . "</td>";
+                        echo        "<td>" . $result['nursefirst']   . "</td>";
+                        echo        "<td>" . $result['nurselast']   . "</td>";
                         echo "</tr>";
                     }            
                     ?>

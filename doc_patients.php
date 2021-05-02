@@ -47,13 +47,16 @@ if(isset($_POST["user_ID"])){
         <div class="collapse navbar-collapse" id="navbarsExample02">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="doc_patients.php">Patients <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="doc_patients.php">Patient List <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="doc_appts.php">Appointments</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="doc_rooms.php">Rooms</a>
+                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="doc_consults.php">Consultations</a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -77,8 +80,8 @@ if(isset($_POST["user_ID"])){
                     <th scope="col">First</th>
                     <th scope="col">Middle</th>
                     <th scope="col">Last</th>
-                    <th scope="col">Admit Date</th>
-                    <th scope="col">Checkout Date</th>
+                    <th scope="col">Admission Date</th>
+                    <th scope="col">Est. Checkout Date</th>
                     <th scope="col">Insurance</th>
                     </tr>
                 </thead>
@@ -166,30 +169,7 @@ if(isset($_POST["user_ID"])){
         $box.style.display='block';
       }
   </script>
-  <?php
-  //insert patient, patient doc, users tables
-//   function insertPatient(){
-//         require('connectdb.php');
-    
-//         global $db;
-//         $query = "CALL add_patient(:p_ID, :firstname, :middlename, :lastname, :insurance, :dateadm, :datecho, :doc_id, :pass, :role);";
-//         $statement = $db->prepare($query); 
-//         $statement->bindValue(':p_ID', $_POST['user_ID']);
-//         $statement->bindValue(':firstname', $_POST['inputFirst']);
-//         $statement->bindValue(':middlename', $_POST['inputMiddle']);
-//         $statement->bindValue(':lastname', $_POST['inputLast']);
-//         $statement->bindValue(':insurance', $_POST['insurance']);
-//         $statement->bindValue(':dateadm', $_POST['adate']);
-//         $statement->bindValue(':datecho', $_POST['cdate']);
-//         $statement->bindValue(':doc_id', $_SESSION['d_ID']);
-//         $statement->bindValue(':pass', $_POST['password']);
-//         $statement->bindValue(':role', 'patient');
-//         $statement->execute();
-//         $results = $statement->fetchAll();
-//         $statement->closecursor();
-//   }
-   
-  ?>
+
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

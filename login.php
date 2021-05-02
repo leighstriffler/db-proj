@@ -78,7 +78,7 @@ $_SESSION['p_ID'] = "";
         }
         if($_SESSION['role']=='nurse'){
           $_SESSION['n_ID']=$results[0]['ID'];
-          header('Location: nurse_appts.php');
+          header('Location: nurse_overnight.php');
         }
       }
       

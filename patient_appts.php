@@ -136,6 +136,7 @@ if(isset($_POST['appt_ID'])){
                         <tr>
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
+                            <th scope='col'>Doctor</th>
                             <th scope='col'>Delete</th> 
                         </tr>
                 </thead>
@@ -154,10 +155,12 @@ if(isset($_POST['appt_ID'])){
                 $results = $statement->fetchAll();
                 $statement->closecursor();
                 foreach($results as $result){
+                    $time=date_create($result['time']);
                     $apptid=$result['appt_ID'];
                     echo "<tr>";
                     echo        "<td>" . $result['date']   . "</td>";
-                    echo        "<td>" . $result['time']   . "</td>";
+                    echo        "<td>" . date_format($time, 'h:ia')   . "</td>";
+                    echo        "<td>" . "Dr. " . $result['doctor.lastname']   . "</td>";
                     // echo        "<td>" . $result['room_num'] . "</td>"; 
                     echo        "<td>" ;
                     echo             "<form action='patient_appts.php'>" .

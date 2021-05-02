@@ -24,13 +24,16 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
-                <a class="nav-link" href="doc_patients.php">Patients</a>
+                <a class="nav-link" href="doc_patients.php">Patient List</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="doc_appts.php">Appointments <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="doc_rooms.php">Rooms</a>
+                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="doc_consults.php">Consultations</a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -61,7 +64,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                             <th scope="col">Last</th>
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
-                            <th scope='col'>Room</th>
                         </tr>
                 </thead>
                 <tbody id='table-body'>
@@ -77,13 +79,13 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                 $results = $statement->fetchAll();
                 $statement->closecursor();
                 foreach($results as $result){
+                    $time=date_create($result['time']);
                     echo "<tr>";
                     echo        "<td>" . $result['firstname'] . '</td>'; 
                     echo        "<td>" . $result['middlename'] . '</td>';
                     echo        "<td>" . $result['lastname'] . "</td>" ;
                     echo        "<td>" . $result['date']   . "</td>";
-                    echo        "<td>" . $result['time']   . "</td>";
-                    echo        "<td>" . $result['room_num'] . "</td>"; 
+                    echo        "<td>" . date_format($time, 'h:ia')   . "</td>";
                     echo "</tr>";
                 }            
                 ?>

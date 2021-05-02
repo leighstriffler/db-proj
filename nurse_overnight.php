@@ -34,7 +34,7 @@ session_start();
         <div class="table-container">
         <div class="table-container">
 
-        <h1 class="page-title table-title"> Appointments </h1>
+        <h1 class="page-title table-title"> Current Overnight Patients </h1>
         <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
         
         <!-- Display Patient Appointments -->
@@ -44,9 +44,9 @@ session_start();
                         <th scope="col">First</th>
                         <th scope="col">Middle</th>
                         <th scope="col">Last</th>
-                        <th scope='col'>Appointment Date</th>
-                        <th scope='col'>Appointment Time</th>
                         <th scope='col'>Room Number</th> 
+                        <th scope='col'>Admission Date</th>
+                        <th scope='col'>Est. Checkout Date</th>
                     </tr>
             </thead>
             <tbody id='table-body'>
@@ -68,9 +68,9 @@ session_start();
                 echo        "<td>" . $result['firstname'] . '</td>'; 
                 echo        "<td>" . $result['middlename'] . '</td>';
                 echo        "<td>" . $result['lastname'] . "</td>" ;
-                echo        "<td>" . $result['date']   . "</td>";
-                echo        "<td>" . $result['time']   . "</td>";
                 echo        "<td>" . $result['room_num'] . "</td>"; 
+                echo        "<td>" . $result['date_admitted']   . "</td>";
+                echo        "<td>" . $result['date_checkout']   . "</td>";
                 echo "</tr>";
             }            
             ?>
