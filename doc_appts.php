@@ -30,7 +30,7 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                 <a class="nav-link" href="doc_appts.php">Appointments <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients</a>
+                <a class="nav-link" href="doc_overnight.php">Overnight Patients</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="doc_consults.php">Consultations</a>
@@ -50,7 +50,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
   <body class="page-background">
     <div class="main-page-area">
         <div class="table-container">
-        <div class="table-container">
             <h1 class="page-title table-title"> Appointments </h1>
             
 
@@ -60,7 +59,7 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                 <thead>
                         <tr>
                             <th scope="col">First</th>
-                            <th scope="col">M.I.</th>
+                            <th scope="col">Middle</th>
                             <th scope="col">Last</th>
                             <th scope='col'>Appointment Date</th>
                             <th scope='col'>Appointment Time</th>
@@ -91,7 +90,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
                 ?>
                 </tbody>
             </table>
-        </div>
     </div>
   </body>
 

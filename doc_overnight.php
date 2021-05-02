@@ -30,7 +30,7 @@ session_start();
                 <a class="nav-link" href="doc_appts.php">Appointments</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="doc_overnight.php">Overnight Patients <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="doc_consults.php">Consultations</a>
@@ -50,7 +50,7 @@ session_start();
   <body class="page-background">
     <div class="main-page-area">
         <div class="table-container">
-            <h1 class="page-title"> Current Overnight Patients</h1>
+            <h1 class="page-title"> Overnight Patients</h1>
             <table class="table table-hover table-sm table-responsive-lg">
                 <thead>
                     <tr>

@@ -48,7 +48,8 @@ $_SESSION['p_ID'] = "";
     require('connectdb.php');
     if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0){
       $user = trim($_POST['username']);
-      $pwd = trim($_POST['password']);
+      $pwd = md5(trim($_POST['password']));
+      echo $pwd;
 
 
       # Check that the username and password combo are correct (that they exist in the users table)

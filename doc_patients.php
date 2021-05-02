@@ -18,7 +18,7 @@ if(isset($_POST["user_ID"])){
         $statement->bindValue(':dateadm', $_POST['adate']);
         $statement->bindValue(':datecho', $_POST['cdate']);
         $statement->bindValue(':doc_id', $_SESSION['d_ID']);
-        $statement->bindValue(':pass', $_POST['password']);
+        $statement->bindValue(':pass', md5($_POST['password']));
         $statement->bindValue(':role', 'patient');
         $statement->execute();
         $results = $statement->fetchAll();
@@ -43,7 +43,6 @@ if(isset($_POST["user_ID"])){
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarsExample02">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -53,7 +52,7 @@ if(isset($_POST["user_ID"])){
                 <a class="nav-link" href="doc_appts.php">Appointments</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients</a>
+                <a class="nav-link" href="doc_overnight.php">Overnight Patients</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="doc_consults.php">Consultations</a>
@@ -73,7 +72,7 @@ if(isset($_POST["user_ID"])){
   <body class="page-background">
     <div class="main-page-area">
         <div class="table-container">
-            <h1 class="page-title"> Patients </h1>
+            <h1 class="page-title table-title"> Patients </h1>
             <table id="appts-table" class="table table-hover table-sm table-responsive-sm">
                 <thead>
                     <tr>
@@ -111,8 +110,8 @@ if(isset($_POST["user_ID"])){
                 </tbody>
             </table>
         </div>
-        <div class="add-row-container">
-
+        <button id="add-patient-btn" class = "btn btn-primary" onclick="showAddPatient()"> Add New Patient </button>
+        <div id="add-patient-container">
                 <h3> Add Patient </h3>
                 <form method='POST'>
                     <div class="form-row">
@@ -169,6 +168,14 @@ if(isset($_POST["user_ID"])){
         $box.style.display='block';
       }
   </script>
+  <script>
+    function showAddPatient(){
+    $button=document.getElementById('add-patient-btn');
+    $button.style.display='none';
+    $addPatient=document.getElementById('add-patient-container');
+    $addPatient.style.display='block';
+    }
+</script>
 
 
   <!-- Bootstrap Javascript -->

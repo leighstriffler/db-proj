@@ -1,6 +1,5 @@
 <?php 
 session_start(); 
-
 if(isset($_POST['inputFirst'])){
     require('connectdb.php');
     global $db;
@@ -18,17 +17,14 @@ if(isset($_POST['inputFirst'])){
 }
 
 if(isset($_POST['appt_ID'])){
-
     require('connectdb.php');
-    echo 'hi';
         global $db;
         $query = "CALL delete_appt(:p_id, :appointmentid) ";
         $statement = $db->prepare($query); 
-        $statement->bindValue(':p_id', $_SESSION['user_ID']);
+        $statement->bindValue(':p_id', $_SESSION['user']);
         $statement->bindValue(':appointmentid', $_POST['appt_ID']);
         $statement->execute();
         $results = $statement->fetchAll();
-        echo $results;
         $statement->closecursor();
 }
 ?>
@@ -161,11 +157,10 @@ if(isset($_POST['appt_ID'])){
                     echo        "<td>" . $result['date']   . "</td>";
                     echo        "<td>" . date_format($time, 'h:ia')   . "</td>";
                     echo        "<td>" . "Dr. " . $result['doctor.lastname']   . "</td>";
-                    // echo        "<td>" . $result['room_num'] . "</td>"; 
                     echo        "<td>" ;
-                    echo             "<form action='patient_appts.php'>" .
+                    echo             "<form method='POST'>" .
                                "<input type='hidden' name='appt_ID' value='" .$apptid. "'>" .
-                                "<button class='btn btn-primary' id='delete-button'>Delete</button</td>";
+                                "<button type='Submit' class='btn btn-primary' id='delete-button'>Delete</button</td>";
                                 "</form>";
                     echo "</tr>";
                 }            
