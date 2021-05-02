@@ -1,0 +1,20 @@
+
+1. Put all this in the php tag at the very top
+
+if(isset($_POST["p_ID"])){
+    global $db;
+    $query = "UPDATE `patient` SET firstname=:firstname, middlename=:middlename, lastname=:lastname, insurance=:insurance   WHERE `patient`.`p_ID`=:p_ID";
+    $statement = $db->prepare($query); 
+    $statement->bindValue(':p_ID', $_SESSION['user']);
+    $statement->bindValue(':firstname', $_POST['inputFirst']);
+    $statement->bindValue(':middlename', $_POST['inputMiddle']);
+    $statement->bindValue(':lastname', $_POST['inputLast']);
+    $statement->bindValue(':insurance', $_POST['insurance']);  
+    $statement->execute();
+    $results = $statement->fetchAll();
+    $statement->closecursor();
+}
+
+2. delete the onclick thing in the submit button
+
+3. delete the updatePatient() function
