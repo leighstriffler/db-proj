@@ -2,10 +2,10 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 01, 2021 at 11:33 PM
+-- Host: localhost
+-- Generation Time: May 02, 2021 at 03:54 PM
 -- Server version: 10.4.17-MariaDB
--- PHP Version: 7.3.27
+-- PHP Version: 7.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,6 +33,14 @@ CREATE TABLE `appointment` (
   `d_ID` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `appointment`
+--
+
+INSERT INTO `appointment` (`appt_ID`, `p_ID`, `d_ID`) VALUES
+('1', 'aabranch', '1001'),
+('2', 'hhbranch', '1001');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +53,14 @@ CREATE TABLE `attends` (
   `date` date NOT NULL,
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `attends`
+--
+
+INSERT INTO `attends` (`p_ID`, `appt_ID`, `date`, `time`) VALUES
+('aabranch', '1', '2021-05-12', '07:38:00'),
+('hhbranch', '2', '2021-05-29', '24:21:00');
 
 -- --------------------------------------------------------
 
@@ -71,6 +87,13 @@ CREATE TABLE `doctor` (
   `phone_num` int(10) NOT NULL,
   `office` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `doctor`
+--
+
+INSERT INTO `doctor` (`d_ID`, `firstname`, `middlename`, `lastname`, `phone_num`, `office`) VALUES
+('1001', 'Bob', 'the', 'Doctor', 123456789, 'West Office');
 
 -- --------------------------------------------------------
 
@@ -137,6 +160,13 @@ CREATE TABLE `nurse` (
   `d_ID` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `nurse`
+--
+
+INSERT INTO `nurse` (`n_ID`, `firstname`, `middlename`, `lastname`, `phone_num`, `department`, `d_ID`) VALUES
+('nurse1', 'Emily', 'Marie', 'Strauss', 1234567890, 'ER', '1001');
+
 -- --------------------------------------------------------
 
 --
@@ -171,6 +201,16 @@ CREATE TABLE `patient` (
   `date_checkout` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `patient`
+--
+
+INSERT INTO `patient` (`p_ID`, `firstname`, `middlename`, `lastname`, `insurance`, `date_admitted`, `date_checkout`) VALUES
+('aabranch', 'Ally', 'A', 'Branch', 'None', '2021-05-11', '2021-05-20'),
+('hhbranch', 'Heidi', 'A', 'Branch', 'Aetna', '2021-05-08', '2021-06-04'),
+('nbBranch', 'Noell', 'Elise', 'Branch', 'Aetna', '2021-05-05', '2021-06-03'),
+('sStein', 'Shay', 'Nicole', 'Steinkirchner', 'Aetna', '2021-05-14', '2021-06-03');
+
 -- --------------------------------------------------------
 
 --
@@ -203,6 +243,16 @@ CREATE TABLE `patient_doc` (
   `p_ID` varchar(255) NOT NULL,
   `d_ID` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `patient_doc`
+--
+
+INSERT INTO `patient_doc` (`p_ID`, `d_ID`) VALUES
+('aabranch', '1001'),
+('hhbranch', '1001'),
+('nbBranch', '1001'),
+('sStein', '1001');
 
 -- --------------------------------------------------------
 
@@ -237,6 +287,14 @@ CREATE TABLE `reserves` (
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `reserves`
+--
+
+INSERT INTO `reserves` (`d_ID`, `room_num`, `p_ID`, `date`, `time`) VALUES
+('1001', '100', 'aabranch', '2021-05-13', '25:32:31'),
+('1001', '200', 'hhbranch', '2021-05-25', '24:21:00');
+
 -- --------------------------------------------------------
 
 --
@@ -247,6 +305,14 @@ CREATE TABLE `room` (
   `room_num` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `room`
+--
+
+INSERT INTO `room` (`room_num`, `type`) VALUES
+('100', 'Exam'),
+('200', 'Exam');
 
 -- --------------------------------------------------------
 
@@ -259,6 +325,18 @@ CREATE TABLE `users` (
   `pass` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`ID`, `pass`, `role`) VALUES
+('1001', 'password', 'doctor'),
+('aabranch', 'password', 'patient'),
+('hhbranch', 'password', 'patient'),
+('nbBranch', 'password', 'patient'),
+('nurse1', 'password', 'nurse'),
+('sStein', 'password', 'patient');
 
 -- --------------------------------------------------------
 
