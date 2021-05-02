@@ -30,7 +30,7 @@ session_start();
                 <a class="nav-link" href="doc_appts.php">Appointments</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="doc_overnight.php">Current Overnight Patients</a>
+                <a class="nav-link" href="doc_overnight.php">Overnight Patients</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="doc_consults.php">Consultations <span class="sr-only">(current)</span></a>
@@ -50,25 +50,21 @@ session_start();
   <body class="page-background">
     <div class="main-page-area">
         <div class="table-container">
-            <h1 class="page-title"> Current Overnight Patients</h1>
+            <h1 class="page-title"> My Consultations</h1>
             <table class="table table-hover table-sm table-responsive-lg">
                 <thead>
                     <tr>
-                    <th scope="col">Patient's First</th>
-                    <th scope="col">Patient's Last</th>
-                    <th scope="col">Room Number</th>
-                    <th scope="col">Admission Date</th>
-                    <th scope='col'>Est. Checkout Date</th>
-                    <th scope="col">Nurse's First Name</th>
-                    <th scope="col">Nurse's Last Name</th>
+                    <th scope="col">Doctor First</th>
+                    <th scope="col">Doctor Last</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Description</th>
                     </tr>
                 </thead>
                 <tbody id='table-body'>
                 <?php
                     require('connectdb.php');
-
                     global $db;
-                    $query = "select * from doc_reserve_view WHERE d_ID=:ID";
+                    $query = "select * from doc_consults_view WHERE d1_ID=:ID";
                     $statement = $db->prepare($query); 
                     $statement->bindValue(':ID', $_SESSION['d_ID']);
                     $statement->execute();
@@ -78,11 +74,8 @@ session_start();
                         echo "<tr>";
                         echo        "<td>" . $result['firstname'] . '</td>'; 
                         echo        "<td>" . $result['lastname'] . '</td>';
-                        echo        "<td>" . $result['room_num'] . "</td>" ;
-                        echo        "<td>" . $result['date_admitted']   . "</td>";
-                        echo        "<td>" . $result['date_checkout']   . "</td>";
-                        echo        "<td>" . $result['nursefirst']   . "</td>";
-                        echo        "<td>" . $result['nurselast']   . "</td>";
+                        echo        "<td>" . $result['date'] . '</td>';
+                        echo        "<td>" . $result['description'] . "</td>" ;
                         echo "</tr>";
                     }            
                     ?>
