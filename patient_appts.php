@@ -99,7 +99,7 @@ if(isset($_POST['action'])){
 
                     global $db;
                 //display their contact info
-                $query = "select * from patient_info_view WHERE p_ID=:user ";
+                $query = "select * from lss4de.patient_info_view WHERE p_ID=:user ";
                 $statement = $db->prepare($query); 
                 $statement->bindValue(':user', $_SESSION['user']);
                 $statement->execute();

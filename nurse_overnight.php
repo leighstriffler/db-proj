@@ -57,7 +57,7 @@ session_start();
             global $db;
 
             //display their appts
-            $query = "select * from nurse_reserves_view WHERE n_ID=:ID";
+            $query = "select * from lss4de.nurse_reserves_view WHERE n_ID=:ID";
             $statement = $db->prepare($query); 
             $statement->bindValue(':ID', $_SESSION['n_ID']);
             $statement->execute();

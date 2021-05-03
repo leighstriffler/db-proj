@@ -26,7 +26,7 @@ $_SESSION['p_ID'] = "";
     <div class="main-page-area" id="login-box">
       <img id="login-logo" src="logo3.png"></img>
       <h1 class="page-title" id="login-title"> Hospital Portal Login </h1>
-      <form method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
+      <form method="POST">
         <div class="form-group text-center">
           <!-- <label class="login-label" for="inputUser">Username</label> -->
           <input name='username' type="username" class="form-control login-input" id="username" placeholder="Username" required>
@@ -52,7 +52,7 @@ $_SESSION['p_ID'] = "";
 
       # Check that the username and password combo are correct (that they exist in the users table)
       global $db;
-      $query = "select * from users WHERE ID=:id AND pass=:pwd LIMIT 1";
+      $query = "select * from lss4de.users WHERE ID=:id AND pass=:pwd LIMIT 1";
       
       //execute as 'LoginUser' 
       $statement = $db->prepare($query); 
@@ -69,16 +69,52 @@ $_SESSION['p_ID'] = "";
 
         if($_SESSION['role']=='patient'){
           $_SESSION['p_ID'] = $results[0]['ID'];
+          $_SESSION['account']=true;
+          // $db=null;//close connection
+          // require('connectdb.php');
           header('Location: patient_appts.php');
         }
         if($_SESSION['role']=='doctor'){
           $_SESSION['d_ID']=$results[0]['ID'];
+          $_SESSION['account']=true;
+          // $db=null;//close connection
+          // include('connectdb.php');
           header('Location: doc_appts.php');
         }
         if($_SESSION['role']=='nurse'){
           $_SESSION['n_ID']=$results[0]['ID'];
           header('Location: nurse_overnight.php');
         }
+          // $_SESSION['account']=true;
+          // $db=null;//close connection
+//           include('connectdb.php');
+
+//            $username = 'lss4de_a';
+//            $password = 'Spr1ng2021!!';
+//           $host = 'usersrv01.cs.virginia.edu';
+//           $dbname = 'lss4de';
+//           $dsn = "mysql:host=$host;dbname=$dbname";
+
+// /** connect to the database **/
+//           try 
+//           {
+//             $db = new PDO($dsn, $username, $password);   
+            
+//           }
+//           catch (PDOException $e)     // handle a PDO exception (errors thrown by the PDO library)
+//           {
+//             // Call a method from any object, 
+//             // use the object's name followed by -> and then method's name
+//             // All exception objects provide a getMessage() method that returns the error message 
+//             $error_message = $e->getMessage();        
+//           }
+//           catch (Exception $e)       // handle any type of exception
+//           {
+//             $error_message = $e->getMessage();
+//             echo "<p>Error message: $error_message </p>";
+//           }
+                   
+//         }
       }
       
     }

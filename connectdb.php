@@ -23,11 +23,47 @@
 // $host = 'localhost:3306';
 // $dbname = 'db-proj';
 
+
+// if( $_SESSION['role']=='nurse'){
+//    echo "<script>console.log(".$_SESSION['account']. ")</script>";
+//    $username = 'lss4de_a';
+//    $password = 'Spr1ng2021!!';
+//    $host = 'usersrv01.cs.virginia.edu';
+//    $dbname = 'lss4de';
+// }
+// else if(isset($_SESSION['account']) && $_SESSION['role']=='doctor'){
+//    $username = 'lss4de_b';
+//    $password = 'Spr1ng2021!!';
+//    $host = 'usersrv01.cs.virginia.edu';
+//    $dbname = 'lss4de';
+// }
+// else if(isset($_SESSION['account']) && $_SESSION['role']=='patient'){
+//    $username = 'lss4de_c';
+//    $password = 'Spr1ng2021!!';
+//    $host = 'usersrv01.cs.virginia.edu';
+//    $dbname = 'lss4de';
+// }
+
+
 //connecting to leigh's cs server
-$username = 'lss4de';
-$password = 'springJefferson22!';
-$host = 'usersrv01.cs.virginia.edu';
-$dbname = 'lss4de';
+//connect as the default login to authenticate
+// else{
+   $username = 'lss4de';
+   $password = 'springJefferson22!';
+   $host = 'usersrv01.cs.virginia.edu';
+   $dbname = 'lss4de';
+   // echo "<script>console.log(".isset($_SESSION['role']). ")</script>";
+   // echo 'tset';
+   // $username = 'lss4de_d';
+   // $password = 'Spr1ng2021!!';
+   // $host = 'usersrv01.cs.virginia.edu';
+   // $dbname = 'lss4de';
+// }
+
+
+//should connect as the login subuser as default to authenticate
+//then flip accounts
+//literally logout like db.close()
 
 /******************************/
 
@@ -37,6 +73,7 @@ $dsn = "mysql:host=$host;dbname=$dbname";
 try 
 {
    $db = new PDO($dsn, $username, $password);   
+   
 }
 catch (PDOException $e)     // handle a PDO exception (errors thrown by the PDO library)
 {

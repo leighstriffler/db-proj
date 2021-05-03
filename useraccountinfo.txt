@@ -1,0 +1,15 @@
+nurse:
+lss4de_a
+Spr1ng2021!!
+
+doctor:
+lss4de_b
+Spr1ng2021!!
+
+patient:
+lss4de_c
+Spr1ng2021!!
+
+loginuser:
+lss4de_d
+Spr1ng2021!!
