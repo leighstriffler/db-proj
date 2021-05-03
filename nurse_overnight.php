@@ -35,7 +35,7 @@ session_start();
         <div class="table-container">
 
         <h1 class="page-title table-title"> Current Overnight Patients </h1>
-        <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
+        <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort By Admission Date </button>
         
         <!-- Display Patient Appointments -->
         <table id="patient-appts-table" class="table table-hover table-sm table-responsive-lg">
@@ -94,7 +94,7 @@ session_start();
     require('connectdb.php');
     
     global $db;
-    $query = "select * from nurse_appts_view WHERE n_ID=:ID ORDER BY date DESC";
+    $query = "select * from nurse_reserves_view WHERE n_ID=:ID ORDER BY date_admitted DESC";
     $statement = $db->prepare($query); 
     $statement->bindValue(':ID', $_SESSION['n_ID']);
     $statement->execute();
@@ -107,11 +107,11 @@ session_start();
         echo        "<td>" . $result['firstname'] . '</td>'; 
         echo        "<td>" . $result['middlename'] . '</td>';
         echo        "<td>" . $result['lastname'] . "</td>" ;
-        echo        "<td>" . $result['date']   . "</td>";
-        echo        "<td>" . $result['time']   . "</td>";
         echo        "<td>" . $result['room_num'] . "</td>"; 
+        echo        "<td>" . $result['date_admitted']   . "</td>";
+        echo        "<td>" . $result['date_checkout']   . "</td>";
         echo "</tr>";
-    } 
+    }   
  }
  ?>
 
