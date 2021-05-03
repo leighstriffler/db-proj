@@ -110,55 +110,7 @@ if(isset($_POST["user_ID"])){
                 </tbody>
             </table>
         </div>
-        <button id="add-patient-btn" class = "btn btn-primary" onclick="showAddPatient()"> Add New Patient </button>
-        <div id="add-patient-container">
-                <h3> Add Patient </h3>
-                <form method='POST'>
-                    <div class="form-row">
-                        <div class="col">
-                            <label for="inputFirst" class="col-form-label col-form-label-sm">First Name</label>
-                            <input name="inputFirst" type="text" class="form-control form-control-sm"  required>
-                        </div>
-                        <div class="col">
-                            <label for="inputFirst" class="col-form-label col-form-label-sm">Middle Name</label>
-                            <input name='inputMiddle' type="text" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col">
-                            <label for="inputFirst" class="col-form-label col-form-label-sm">Last Name</label>
-                            <input name='inputLast' type="text" class="form-control form-control-sm" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <label for="inputInsurance" class="col-form-label col-form-label-sm">Insurance </label>
-                            <input name='insurance' type="text" class="form-control form-control-sm" placeholder="Provider" required>
-                        </div>
-                        <div class="col">
-                            <label for="admitDate" class="col-form-label col-form-label-sm">Admit Date </label>
-                            <input name='adate' name="admitDate" type="date" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col">
-                            <label for="inputFirst" class="col-form-label col-form-label-sm">Checkout Date</label>
-                            <input name='cdate' type="date" class="form-control form-control-sm" required>
-                        </div>
-                    </div>
 
-                    <div id='credentials' class='form-row'>
-                        <div class="col">
-                            <label for="user_ID" class="col-form-label col-form-label-sm">Create Patient User ID </label>
-                            <input name="user_ID" type="text" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="col">
-                            <label for="password" class="col-form-label col-form-label-sm">Create Patient Temporary Password</label>
-                            <input name='password' type="text" class="form-control form-control-sm" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <button type="submit" class="btn btn-primary add-row-submit">Add New Patient </button>
-                    </div>
-                    </div>
-                </form>
-        </div> 
     </div>
   </body>
 
@@ -168,14 +120,7 @@ if(isset($_POST["user_ID"])){
         $box.style.display='block';
       }
   </script>
-  <script>
-    function showAddPatient(){
-    $button=document.getElementById('add-patient-btn');
-    $button.style.display='none';
-    $addPatient=document.getElementById('add-patient-container');
-    $addPatient.style.display='block';
-    }
-</script>
+
 
 
   <!-- Bootstrap Javascript -->

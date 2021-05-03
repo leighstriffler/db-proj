@@ -1,5 +1,9 @@
 <?php 
 session_start(); 
+// if(!isset($_SESSION['user']) | $_SESSION['user']==""){
+//     header('Location: login.php');
+// }
+
 if(isset($_POST['inputFirst'])){
     require('connectdb.php');
     global $db;
@@ -26,6 +30,22 @@ if(isset($_POST['appt_ID'])){
         $statement->execute();
         $results = $statement->fetchAll();
         $statement->closecursor();
+}
+
+if(isset($_POST['apptdate'])){
+    require('connectdb.php');
+    global $db;
+    echo $_SESSION['p_ID'] . " " . $_POST['apptdate'] . " " . $_POST['appttime'] . " ". $_POST['d_ID'];
+    $query = "CALL add_appt(:p_ID, :apptdate, :appttime, :d_ID);";
+    $statement = $db->prepare($query); 
+    $statement->bindValue(':p_ID', $_SESSION['p_ID']);
+    $statement->bindValue(':apptdate', $_POST['apptdate']);
+    $statement->bindValue(':appttime', $_POST['appttime']);
+    $statement->bindValue(':d_ID', $_POST['d_ID']);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    $statement->closecursor();
+
 }
 ?>
 
@@ -127,7 +147,7 @@ if(isset($_POST['appt_ID'])){
             <h4 class="table-title">My Appointments</h4>
             <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
             <!-- Display Patient Appointments -->
-            <table id="patient-appts-table" class="table table-hover table-sm table-responsive-lg">
+            <table id="patient-appts-table" class="table table-hover table-sm table-responsive-sm">
                 <thead>
                         <tr>
                             <th scope='col'>Appointment Date</th>
@@ -168,6 +188,74 @@ if(isset($_POST['appt_ID'])){
                 </tbody>
             </table>
         </div>
+        <button id="add-appt-btn" class = "btn btn-primary" onclick="showAddAppt()"> Make an Appointment </button>
+        <div id="add-appt-container">
+                <h3> Make an Appointment </h3>
+                <form method='POST'>
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="date" class="col-form-label col-form-label-sm"> Date </label>
+                            <input name='apptdate' name="admitDate" type="date" min="<?php echo date("Y-m-d"); ?>" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col">
+                            <label for="appttime" class="col-form-label col-form-label-sm"> Time </label>
+                            <select name="appttime" class="form-select form-control form-control-sm" required>
+                                <option selected="selected" value="">Start Time</option>
+                                <option value="10:00:00">10:00am</option>
+                                <option value="10:15:00">10:15am</option>
+                                <option value="10:30:00">10:30am</option>
+                                <option value="10:45:00">10:45am</option>
+                                <option value="11:00:00">11:00am</option>
+                                <option value="11:15:00">11:15am</option>
+                                <option value="11:30:00">11:30am</option>
+                                <option value="11:45:00">11:45am</option>
+                                <option value="12:00:00">12:00pm</option>
+                                <option value="12:15:00">12:15pm</option>
+                                <option value="12:30:00">12:30pm</option>
+                                <option value="12:45:00">12:45pm</option>
+                                <option value="13:00:00">1:00pm</option>
+                                <option value="13:15:00">1:15pm</option>
+                                <option value="13:30:00">1:30pm</option>
+                                <option value="13:45:00">1:45pm</option>
+                                <option value="14:00:00">2:00pm</option>
+                                <option value="14:15:00">2:15pm</option>
+                                <option value="14:30:00">2:30pm</option>
+                                <option value="14:45:00">2:45pm</option>
+                                <option value="15:00:00">3:00pm</option>
+                                <option value="15:15:00">3:15pm</option>
+                                <option value="15:30:00">3:30pm</option>
+                                <option value="15:45:00">3:45pm</option>
+                                <option value="16:00:00">4:00pm</option>
+                                <option value="16:15:00">4:15pm</option>
+                                <option value="16:30:00">4:30pm</option>
+                                <option value="16:45:00">4:45pm</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="d_ID" class="col-form-label col-form-label-sm"> Doctor </label>
+                            <select name="d_ID" class="form-select form-control form-control-sm">
+                                <?php 
+                                    require('connectdb.php');
+                                    global $db;
+                                    //display their contact info
+                                    $query = "select * FROM doctor";
+                                    $statement = $db->prepare($query); 
+                                    $statement->bindValue(':user', $_SESSION['user']);
+                                    $statement->execute();
+                                    $results = $statement->fetchAll();
+                                    $statement->closecursor();
+                                    foreach($results as $result){
+                                        echo        "<option value=" . $result['d_ID'] . ">" . $result['firstname'] . " " . $result['lastname'] . '</option>'; 
+                                    }    
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary add-row-submit">Add New Patient </button>
+                    </div>
+                </form>
+            </div> 
     </div>
   </body>
 <script>
@@ -185,6 +273,14 @@ if(isset($_POST['appt_ID'])){
     $box.style.display='block';
     }
 
+</script>
+<script>
+    function showAddAppt(){
+    $button=document.getElementById('add-appt-btn');
+    $button.style.display='none';
+    $addAppt=document.getElementById('add-appt-container');
+    $addAppt.style.display='block';
+    }
 </script>
  <?php
 

@@ -54,13 +54,13 @@ session_start();
             <table class="table table-hover table-sm table-responsive-lg">
                 <thead>
                     <tr>
-                    <th scope="col">Patient's First</th>
-                    <th scope="col">Patient's Last</th>
+                    <th scope="col">Patient First</th>
+                    <th scope="col">Patient Last</th>
                     <th scope="col">Room Number</th>
                     <th scope="col">Admission Date</th>
                     <th scope='col'>Est. Checkout Date</th>
-                    <th scope="col">Nurse's First Name</th>
-                    <th scope="col">Nurse's Last Name</th>
+                    <th scope="col">Nurse First</th>
+                    <th scope="col">Nurse Last</th>
                     </tr>
                 </thead>
                 <tbody id='table-body'>

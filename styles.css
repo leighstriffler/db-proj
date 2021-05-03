@@ -72,10 +72,11 @@ nav{
 .table-container{
     margin: 40px 20px;
 }
-#add-patient-container{
+#add-appt-container{
     padding: 20px 20px;
     background-color: #dff0f1;
     display: none;
+    margin: 0 20px
 }
 #sort-button{
     background-color: none;
@@ -85,7 +86,7 @@ nav{
 #change-user-info-btn{
     float: right;
 }
-#add-patient-btn{
+#add-appt-btn{
     margin: 0 20px;
 }
 
@@ -95,5 +96,4 @@ nav{
     margin: 0px 20px;
     padding: 10px 20px;
     background-color: #dff0f1;
-
 }
