@@ -103,3 +103,7 @@ nav{
     padding: 10px 20px;
     background-color: #dff0f1;
 }
+
+form{
+    margin-block-end: 0 !important;
+}

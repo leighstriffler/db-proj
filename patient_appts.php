@@ -4,11 +4,10 @@ if(!isset($_SESSION['user']) | $_SESSION['user']==""){
     header('Location: login.php');
 }
 
-echo var_dump($_REQUEST);
+//echo var_dump($_REQUEST);
 
 if(isset($_POST['inputFirst'])){
     require('connectdb.php');
-    echo "ADDING";
     global $db;
     $query = "CALL update_patient_info(:p_ID, :firstname, :middlename, :lastname, :insurance);";
     $statement = $db->prepare($query); 
@@ -22,12 +21,10 @@ if(isset($_POST['inputFirst'])){
     $statement->closecursor();
 
 }
-
 if(isset($_POST['action'])){
     require('connectdb.php');
     global $db;
     if($_POST['action']== "add-new-appt"){
-        echo "ADDING APOINTMENT";
         $query = "CALL add_appt(:p_ID, :apptdate, :appttime, :d_ID);";
         $statement = $db->prepare($query); 
         $statement->bindValue(':p_ID', $_SESSION['p_ID']);
@@ -39,7 +36,6 @@ if(isset($_POST['action'])){
         $statement->closecursor();
     }
     else if($_POST['action']== "delete"){
-        echo "DELETING";
         $query = "CALL delete_appt(:p_id, :appointmentid) ";
         $statement = $db->prepare($query); 
         $statement->bindValue(':p_id', $_SESSION['user']);
@@ -123,6 +119,7 @@ if(isset($_POST['action'])){
         </div>
         <div id="update-user-container">
             <h4> Update User Info </h4>
+            <form></form>
             <form method='POST'>
                 <div class="form-row">
                     <div class="col">
@@ -143,7 +140,7 @@ if(isset($_POST['action'])){
                     </div>
                 </div>
                 <div class="form-row">
-                    <input type="submit" class="btn btn-primary add-row-submit">Change Info </input>
+                    <button type="submit" class="btn btn-primary add-row-submit">Change Info </button>
                 </div>
             </form>
         </div> 
@@ -182,7 +179,8 @@ if(isset($_POST['action'])){
                     echo        "<td>" . date_format($time, 'h:ia')   . "</td>";
                     echo        "<td>" . "Dr. " . $result['doctor.lastname']   . "</td>";
                     echo        "<td>" ;
-                    echo       "<form method='POST' action=''>" .
+                    echo       "<form></form>";
+                    echo       "<form method='POST'>" .
                                "<input type='hidden' name='appt_ID' value='" .$apptid. "'>" .
                                 "<button type='submit' name='action' class='btn btn-primary' value='delete'>Delete</button></td>";
                                 "</form>";
@@ -195,7 +193,8 @@ if(isset($_POST['action'])){
         <button type="button" id="add-appt-btn" class = "btn btn-primary" onclick="showAddAppt()"> Make an Appointment </button>
         <div id="add-appt-container">
                 <h3> Make an Appointment </h3>
-                <form id="add-appt-form" method='POST' action="">
+                <form></form>
+                <form id="add-appt-form" method='POST'>
                     <div  class="form-row">
                         <div class="col">
                             <label for="date" class="col-form-label col-form-label-sm"> Date </label>
@@ -256,7 +255,7 @@ if(isset($_POST['action'])){
                         </div>
                     </div>
                     <div class="form-row">
-                        <button for="add-appt-form" type="Submit" name="action" value="add-new-appt" class="btn btn-primary add-row-submit">Add New Appointment </input>
+                        <button for="add-appt-form" type="Submit" name="action" value="add-new-appt" class="btn btn-primary add-row-submit">Add New Appointment </button>
                     </div>
                 </form>
             </div> 
@@ -265,6 +264,7 @@ if(isset($_POST['action'])){
 <script>
     //have to get the dom element for the table to sort and display it
     function sortDateDesc(){
+        console.log("SORTING TABLE");
         $apptstable=document.getElementById('table-body');
         $apptstable.innerHTML= "<?php sortTable()?>";
     }
@@ -286,7 +286,7 @@ if(isset($_POST['action'])){
     $addAppt.style.display='block';
     }
 </script>
- <!-- <?php
+<?php
 
  function sortTable(){
     
@@ -302,14 +302,22 @@ if(isset($_POST['action'])){
 
     //display the sorted table
     foreach($results as $result){
+        $time=date_create($result['time']);
+        $apptid=$result['appt_ID'];
         echo "<tr>";
         echo        "<td>" . $result['date']   . "</td>";
-        echo        "<td>" . $result['time']   . "</td>";
-        echo        "<td> <button type='submit' class='btn btn-primary'>Delete</button</td>";
+        echo        "<td>" . date_format($time, 'h:ia')   . "</td>";
+        echo        "<td>" . "Dr. " . $result['doctor.lastname']   . "</td>";
+        echo        "<td>" ;
+        echo         "<form></form>";
+        echo       "<form method='POST' action=''>" .
+                   "<input type='hidden' name='appt_ID' value='" .$apptid. "'>" .
+                    "<button type='submit' name='action' class='btn btn-primary' value='delete'>Delete</button></td>";
+                    "</form>";
         echo "</tr>";
-    } 
+    }   
  }
- ?> -->
+ ?> 
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
