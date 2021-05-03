@@ -1,11 +1,14 @@
 <?php 
 session_start(); 
-// if(!isset($_SESSION['user']) | $_SESSION['user']==""){
-//     header('Location: login.php');
-// }
+if(!isset($_SESSION['user']) | $_SESSION['user']==""){
+    header('Location: login.php');
+}
+
+echo var_dump($_REQUEST);
 
 if(isset($_POST['inputFirst'])){
     require('connectdb.php');
+    echo "ADDING";
     global $db;
     $query = "CALL update_patient_info(:p_ID, :firstname, :middlename, :lastname, :insurance);";
     $statement = $db->prepare($query); 
@@ -20,9 +23,23 @@ if(isset($_POST['inputFirst'])){
 
 }
 
-if(isset($_POST['appt_ID'])){
+if(isset($_POST['action'])){
     require('connectdb.php');
-        global $db;
+    global $db;
+    if($_POST['action']== "add-new-appt"){
+        echo "ADDING APOINTMENT";
+        $query = "CALL add_appt(:p_ID, :apptdate, :appttime, :d_ID);";
+        $statement = $db->prepare($query); 
+        $statement->bindValue(':p_ID', $_SESSION['p_ID']);
+        $statement->bindValue(':apptdate', $_POST['apptdate']);
+        $statement->bindValue(':appttime', $_POST['appttime']);
+        $statement->bindValue(':d_ID', $_POST['d_ID']);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $statement->closecursor();
+    }
+    else if($_POST['action']== "delete"){
+        echo "DELETING";
         $query = "CALL delete_appt(:p_id, :appointmentid) ";
         $statement = $db->prepare($query); 
         $statement->bindValue(':p_id', $_SESSION['user']);
@@ -30,23 +47,10 @@ if(isset($_POST['appt_ID'])){
         $statement->execute();
         $results = $statement->fetchAll();
         $statement->closecursor();
+    }
 }
 
-if(isset($_POST['apptdate'])){
-    require('connectdb.php');
-    global $db;
-    echo $_SESSION['p_ID'] . " " . $_POST['apptdate'] . " " . $_POST['appttime'] . " ". $_POST['d_ID'];
-    $query = "CALL add_appt(:p_ID, :apptdate, :appttime, :d_ID);";
-    $statement = $db->prepare($query); 
-    $statement->bindValue(':p_ID', $_SESSION['p_ID']);
-    $statement->bindValue(':apptdate', $_POST['apptdate']);
-    $statement->bindValue(':appttime', $_POST['appttime']);
-    $statement->bindValue(':d_ID', $_POST['d_ID']);
-    $statement->execute();
-    $results = $statement->fetchAll();
-    $statement->closecursor();
 
-}
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +65,7 @@ if(isset($_POST['apptdate'])){
 
   <header>
     <nav class="navbar navbar-expand navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse">
+        <button type="button" class="navbar-toggler" type="button" data-toggle="collapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse">
@@ -81,7 +85,7 @@ if(isset($_POST['apptdate'])){
         <div class="table-container">
             <h1 class="page-title"> Patient Portal </h1>
             <h4 class="table-title">Personal Information</h4>
-            <button id="change-user-info-btn" class = "btn btn-primary" onclick="showEdit()"> Change User Info </button>
+            <button type="button" id="change-user-info-btn" class = "btn btn-primary" onclick="showEdit()"> Change User Info </button>
             <table id="patient-info-table" class="table table-hover table-sm table-responsive-sm">
 
                 <thead>
@@ -139,13 +143,13 @@ if(isset($_POST['apptdate'])){
                     </div>
                 </div>
                 <div class="form-row">
-                    <button type="submit" class="btn btn-primary add-row-submit" onclick="<?php $_SESSION['apptdelete']=true; ?>">Change Info </button>
+                    <input type="submit" class="btn btn-primary add-row-submit">Change Info </input>
                 </div>
             </form>
         </div> 
-        <div class="table-container">
+        <div id="appts-container" class="table-container">
             <h4 class="table-title">My Appointments</h4>
-            <button class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
+            <button type="button" class="btn btn-primary" id='sort-button' onclick='sortDateDesc()'>Sort Appointments by Date</button>
             <!-- Display Patient Appointments -->
             <table id="patient-appts-table" class="table table-hover table-sm table-responsive-sm">
                 <thead>
@@ -178,28 +182,28 @@ if(isset($_POST['apptdate'])){
                     echo        "<td>" . date_format($time, 'h:ia')   . "</td>";
                     echo        "<td>" . "Dr. " . $result['doctor.lastname']   . "</td>";
                     echo        "<td>" ;
-                    echo             "<form method='POST'>" .
+                    echo       "<form method='POST' action=''>" .
                                "<input type='hidden' name='appt_ID' value='" .$apptid. "'>" .
-                                "<button type='Submit' class='btn btn-primary' id='delete-button'>Delete</button</td>";
+                                "<button type='submit' name='action' class='btn btn-primary' value='delete'>Delete</button></td>";
                                 "</form>";
                     echo "</tr>";
                 }            
-                ?>
+                ?> 
                 </tbody>
             </table>
         </div>
-        <button id="add-appt-btn" class = "btn btn-primary" onclick="showAddAppt()"> Make an Appointment </button>
+        <button type="button" id="add-appt-btn" class = "btn btn-primary" onclick="showAddAppt()"> Make an Appointment </button>
         <div id="add-appt-container">
                 <h3> Make an Appointment </h3>
-                <form method='POST'>
-                    <div class="form-row">
+                <form id="add-appt-form" method='POST' action="">
+                    <div  class="form-row">
                         <div class="col">
                             <label for="date" class="col-form-label col-form-label-sm"> Date </label>
-                            <input name='apptdate' name="admitDate" type="date" min="<?php echo date("Y-m-d"); ?>" class="form-control form-control-sm" required>
+                            <input name='apptdate' name="admitDate" type="date" min="<?php echo date("Y-m-d"); ?>" class="form-control form-control-sm" >
                         </div>
                         <div class="col">
                             <label for="appttime" class="col-form-label col-form-label-sm"> Time </label>
-                            <select name="appttime" class="form-select form-control form-control-sm" required>
+                            <select name="appttime" class="form-select form-control form-control-sm" >
                                 <option selected="selected" value="">Start Time</option>
                                 <option value="10:00:00">10:00am</option>
                                 <option value="10:15:00">10:15am</option>
@@ -252,7 +256,7 @@ if(isset($_POST['apptdate'])){
                         </div>
                     </div>
                     <div class="form-row">
-                        <button type="submit" class="btn btn-primary add-row-submit">Add New Patient </button>
+                        <button for="add-appt-form" type="Submit" name="action" value="add-new-appt" class="btn btn-primary add-row-submit">Add New Appointment </input>
                     </div>
                 </form>
             </div> 
@@ -282,7 +286,7 @@ if(isset($_POST['apptdate'])){
     $addAppt.style.display='block';
     }
 </script>
- <?php
+ <!-- <?php
 
  function sortTable(){
     
@@ -301,12 +305,11 @@ if(isset($_POST['apptdate'])){
         echo "<tr>";
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
-        echo        "<td>" . $result['room_num'] . "</td>"; 
-        echo        "<td> <button id='delete-button' class='btn btn-primary'>Delete</button</td>";
+        echo        "<td> <button type='submit' class='btn btn-primary'>Delete</button</td>";
         echo "</tr>";
     } 
  }
- ?>
+ ?> -->
 
   <!-- Bootstrap Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

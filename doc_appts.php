@@ -123,7 +123,6 @@ if ($_SESSION['role']!="doctor" & $_SESSION['role']!="Doctor"){
         echo        "<td>" . $result['lastname'] . "</td>" ;
         echo        "<td>" . $result['date']   . "</td>";
         echo        "<td>" . $result['time']   . "</td>";
-        echo        "<td>" . $result['room_num'] . "</td>"; 
         echo "</tr>";
     } 
  }

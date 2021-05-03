@@ -88,8 +88,14 @@ nav{
 }
 #add-appt-btn{
     margin: 0 20px;
+    background-color: #00C4CC !important;
+    border: #00C4CC !important;
+
 }
 
+#appts-container{
+    margin-bottom: 10px;
+}
 /*doc_patients page*/
 #update-user-container{
     display: none;

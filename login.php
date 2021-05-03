@@ -49,8 +49,6 @@ $_SESSION['p_ID'] = "";
     if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0){
       $user = trim($_POST['username']);
       $pwd = md5(trim($_POST['password']));
-      echo $pwd;
-
 
       # Check that the username and password combo are correct (that they exist in the users table)
       global $db;
